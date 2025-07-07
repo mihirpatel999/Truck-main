@@ -1401,7 +1401,15 @@ export default function UserMaster({ onClose }) {
   useEffect(() => {
   setMounted(true);
 
-  const roles = loggedInRole?.split(',').map(r => r.trim().toLowerCase()) || [];
+  // const roles = loggedInRole?.split(',').map(r => r.trim().toLowerCase()) || [];
+
+  const roles = (loggedInRole || '').split(',').map(r => r.trim().toLowerCase());
+if (!roles.includes('admin') && !roles.includes('owner')) !roles.includes('usermaster')) {
+  toast.error('You are not authorized to create users');
+  handleClose();
+  return;
+}
+
 
   if (!roles.includes('admin') && !roles.includes('owner')) {
     toast.error('You are not authorized to create users');
