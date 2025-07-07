@@ -7361,7 +7361,7 @@ const canAccessRoute = (requiredRoute) => {
           title: "User Master", 
           path: "/usermaster", 
           icon: <FiUsers size={16} />,
-          show: () => hasModuleAccess('UserMaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('usermaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
         },
         { 
           title: "User Register", 
