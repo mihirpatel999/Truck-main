@@ -1399,18 +1399,21 @@ export default function UserMaster({ onClose }) {
   const loggedInRole = localStorage.getItem('userRole');
 
   useEffect(() => {
-    setMounted(true);
-    
-    if (!['Admin', 'Owner'].some(role => loggedInRole?.includes(role))) {
-      toast.error('You are not authorized to create users');
-      handleClose();
-      return;
-    }
-    
-    fetchPlants();
-    
-    return () => setMounted(false);
-  }, [loggedInRole]);
+  setMounted(true);
+
+  const roles = loggedInRole?.split(',').map(r => r.trim().toLowerCase()) || [];
+
+  if (!roles.includes('admin') && !roles.includes('owner')) {
+    toast.error('You are not authorized to create users');
+    handleClose();
+    return;
+  }
+
+  fetchPlants();
+
+  return () => setMounted(false);
+}, [loggedInRole]);
+
 
   const fetchPlants = async () => {
     console.log('Fetching plants...');
