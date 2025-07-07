@@ -7358,7 +7358,7 @@ const canAccessRoute = (requiredRoute) => {
           show: () => hasModuleAccess('PlantMaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
         },
         { 
-          title: "User Management", 
+          title: "User Master", 
           path: "/usermaster", 
           icon: <FiUsers size={16} />,
           show: () => hasModuleAccess('UserMaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
