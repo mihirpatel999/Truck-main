@@ -584,7 +584,7 @@ const roleAccess = {
   Dispatch: ['truck', 'truckfind'],
   GateKeeper: ['gate'],
   PlantMaster: ['plantmaster'],
-  UserMaster: ['usermaster'], // UserMaster has access to both
+  UserMaster: ['usermaster','userregister'], // UserMaster has access to both
   UserRegister: ['userregister'],
   Report: ['reports', 'truckshedule'],
   Loader: ['loader'],
