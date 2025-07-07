@@ -3039,6 +3039,334 @@
 
 
 
+// import { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+// import {
+//   MdOutlineWarehouse,
+//   MdOutlineDashboard,
+//   MdOutlineAnalytics,
+// } from "react-icons/md";
+// import { FiSearch, FiClock } from "react-icons/fi";
+// import { BsDoorOpen, BsCalendarCheck, BsBoxSeam, BsShieldLock } from "react-icons/bs";
+// import { PiPackageLight } from "react-icons/pi";
+// import { RiTruckLine, RiUserSettingsLine } from "react-icons/ri";
+// import { HiOutlineUserGroup } from "react-icons/hi";
+
+// export default function Home() {
+//   const [isMobile, setIsMobile] = useState(false);
+//   const userRole = localStorage.getItem("userRole");
+//   const userName = localStorage.getItem("userName") || "User";
+//   const [currentTime, setCurrentTime] = useState(new Date());
+
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setIsMobile(window.innerWidth <= 768);
+//     };
+
+//     handleResize();
+//     window.addEventListener("resize", handleResize);
+
+//     const timer = setInterval(() => {
+//       setCurrentTime(new Date());
+//     }, 60000);
+
+//     return () => {
+//       window.removeEventListener("resize", handleResize);
+//       clearInterval(timer);
+//     };
+//   }, []);
+
+//   const panelList = [
+//     {
+//       name: "Dashboard",
+//       path: "/dashboard",
+//       icon: <MdOutlineDashboard size={24} />,
+//       roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report"],
+//       color: "bg-blue-100",
+//       iconColor: "text-blue-600",
+//       navIcon: <MdOutlineDashboard size={20} />,
+//       description: "Overview of all operations"
+//     },
+//     {
+//       name: "Plant Master",
+//       path: "/plantmaster",
+//       icon: <MdOutlineWarehouse size={24} />,
+//       roles: ["Owner", "Admin"],
+//       color: "bg-indigo-100",
+//       iconColor: "text-indigo-600",
+//       navIcon: <MdOutlineWarehouse size={20} />,
+//       description: "Manage plant locations"
+//     },
+//     {
+//       name: "User Management",
+//       path: "/usermaster",
+//       icon: <RiUserSettingsLine size={24} />,
+//       roles: ["Owner", "Admin"],
+//       color: "bg-teal-100",
+//       iconColor: "text-teal-600",
+//       navIcon: <RiUserSettingsLine size={20} />,
+//       description: "Manage system users"
+//     },
+//     {
+//       name: "User Register",
+//       path: "/userregister",
+//       icon: <BsShieldLock size={24} />,
+//       roles: ["Owner", "Admin"],
+//       color: "bg-cyan-100",
+//       iconColor: "text-cyan-600",
+//       navIcon: <BsShieldLock size={20} />,
+//       description: "Register new users"
+//     },
+//     {
+//       name: "Truck Transaction",
+//       path: "/truck",
+//       icon: <RiTruckLine size={24} />,
+//       roles: ["Owner", "Admin", "Dispatch"],
+//       color: "bg-orange-100",
+//       iconColor: "text-orange-600",
+//       navIcon: <RiTruckLine size={20} />,
+//       description: "Manage truck movements"
+//     },
+//     {
+//       name: "Truck Locator",
+//       path: "/truckfind",
+//       icon: <FiSearch size={24} />,
+//       roles: ["Owner", "Admin", "Dispatch"],
+//       color: "bg-red-100",
+//       iconColor: "text-red-600",
+//       navIcon: <FiSearch size={20} />,
+//       description: "Track truck locations"
+//     },
+//     {
+//       name: "Gate Control",
+//       path: "/gate",
+//       icon: <BsDoorOpen size={24} />,
+//       roles: ["Owner", "Admin", "GateKeeper"],
+//       color: "bg-purple-100",
+//       iconColor: "text-purple-600",
+//       navIcon: <BsDoorOpen size={20} />,
+//       description: "Control gate access"
+//     },
+//     {
+//       name: "Loading Dock",
+//       path: "/loader",
+//       icon: <PiPackageLight size={24} />,
+//       roles: ["Owner", "Admin", "Loader"],
+//       color: "bg-amber-100",
+//       iconColor: "text-amber-600",
+//       navIcon: <PiPackageLight size={20} />,
+//       description: "Manage loading operations"
+//     },
+//     {
+//       name: "Operations Report",
+//       path: "/reports",
+//       icon: <MdOutlineAnalytics size={24} />,
+//       roles: ["Owner", "Admin", "Report"],
+//       color: "bg-green-100",
+//       iconColor: "text-green-600",
+//       navIcon: <MdOutlineAnalytics size={20} />,
+//       description: "View operational reports"
+//     },
+//     {
+//       name: "Schedule Board",
+//       path: "/truckshedule",
+//       icon: <BsCalendarCheck size={24} />,
+//       roles: ["Owner", "Admin", "Report"],
+//       color: "bg-pink-100",
+//       iconColor: "text-pink-600",
+//       navIcon: <BsCalendarCheck size={20} />,
+//       description: "View truck schedules"
+//     },
+//     {
+//       name: "Staff Management",
+//       path: "/staff",
+//       icon: <HiOutlineUserGroup size={24} />,
+//       roles: ["Owner", "Admin"],
+//       color: "bg-violet-100",
+//       iconColor: "text-violet-600",
+//       navIcon: <HiOutlineUserGroup size={20} />,
+//       description: "Manage staff members"
+//     },
+//     {
+//       name: "Time Tracking",
+//       path: "/timeclock",
+//       icon: <FiClock size={24} />,
+//       roles: ["Owner", "Admin", "Dispatch"],
+//       color: "bg-emerald-100",
+//       iconColor: "text-emerald-600",
+//       navIcon: <FiClock size={20} />,
+//       description: "Track working hours"
+//     }
+//   ];
+
+//   // Filter panels based on user role
+//   const allowedPanels = panelList.filter((panel) => {
+//     if (!userRole) return false;
+//     const userRoles = userRole.split(",").map((r) => r.trim().toLowerCase());
+//     return userRoles.some((role) =>
+//       panel.roles.map((r) => r.toLowerCase()).includes(role)
+//     );
+//   });
+
+//   // Filter navigation items for mobile bottom bar
+//   const allowedNavItems = panelList.filter((panel) => {
+//     if (!userRole) return false;
+//     const userRoles = userRole.split(",").map((r) => r.trim().toLowerCase());
+//     return (
+//       userRoles.some((role) =>
+//         panel.roles.map((r) => r.toLowerCase()).includes(role)
+//       ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind"].includes(panel.path)
+//     );
+//   });
+
+//   const formatTime = (date) => {
+//     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+//   };
+
+//   const formatDate = (date) => {
+//     return date.toLocaleDateString("en-US", {
+//       weekday: "long",
+//       month: "long",
+//       day: "numeric",
+//     });
+//   };
+
+//   // Desktop view
+//   if (!isMobile) {
+//     return (
+//       <div className="min-h-screen bg-gray-50 font-sans">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+//           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+//             <div>
+//               <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
+//                 Welcome back, <span className="text-blue-600">{userName}</span>
+//               </h1>
+//               <p className="text-gray-500">
+//                 {formatDate(currentTime)} • {formatTime(currentTime)}
+//               </p>
+//             </div>
+//             <div className="flex items-center gap-4">
+//               <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border border-gray-200">
+//                 <span className="text-blue-600 font-medium">
+//                   {userName.charAt(0).toUpperCase()}
+//                 </span>
+//               </div>
+//             </div>
+//           </header>
+
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+//             {allowedPanels.map((panel, index) => (
+//               <Link
+//                 to={panel.path}
+//                 key={index}
+//                 className="group relative no-underline focus:outline-none transition-transform hover:-translate-y-1"
+//               >
+//                 <div className="h-full rounded-xl p-6 bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-blue-100 flex flex-col">
+//                   <div
+//                     className={`w-14 h-14 rounded-xl mb-5 flex items-center justify-center ${panel.color} transition-transform duration-300 group-hover:scale-110`}
+//                   >
+//                     <div className={`${panel.iconColor} transition-colors group-hover:text-blue-600`}>{panel.icon}</div>
+//                   </div>
+//                   <h3 className="text-lg font-semibold text-gray-800 mb-1">
+//                     {panel.name}
+//                   </h3>
+//                   <p className="text-sm text-gray-500 mb-4">{panel.description}</p>
+//                   <div className="mt-auto flex justify-between items-center">
+//                     <span className="text-xs font-medium px-2 py-1 rounded bg-gray-50 text-gray-500">
+//                       Access module
+//                     </span>
+//                     <div className="text-gray-300 group-hover:text-blue-400 transition-colors">
+//                       <svg
+//                         width="20"
+//                         height="20"
+//                         viewBox="0 0 24 24"
+//                         fill="none"
+//                         xmlns="http://www.w3.org/2000/svg"
+//                       >
+//                         <path
+//                           d="M9 18L15 12L9 6"
+//                           stroke="currentColor"
+//                           strokeWidth="2"
+//                           strokeLinecap="round"
+//                           strokeLinejoin="round"
+//                         />
+//                       </svg>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </Link>
+//             ))}
+//           </div>
+
+//           <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+//             <p>Lemon Logistics ERP • v2.5 • {new Date().getFullYear()}</p>
+//           </footer>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // Mobile View
+//   return (
+//     <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+//       <main className="p-4">
+//         <div className="flex justify-between items-center mb-6">
+//           <div>
+//             <h1 className="text-xl font-semibold text-gray-800">
+//               Hello, {userName}
+//             </h1>
+//             <p className="text-xs text-gray-500 mt-1">
+//               {currentTime.toLocaleDateString("en-US", {
+//                 weekday: "short",
+//                 month: "short",
+//                 day: "numeric",
+//               })}
+//             </p>
+//           </div>
+//           <div className="text-sm font-medium text-gray-700 bg-white rounded-full px-3 py-1 shadow-sm border border-gray-200">
+//             {formatTime(currentTime)}
+//           </div>
+//         </div>
+
+//         <div className="grid grid-cols-2 gap-3">
+//           {allowedPanels.map((panel, idx) => (
+//             <Link
+//               to={panel.path}
+//               key={idx}
+//               className="no-underline active:scale-95 transition-transform focus:outline-none"
+//             >
+//               <div className="bg-white rounded-xl p-4 shadow-sm h-full flex flex-col items-center border border-gray-100">
+//                 <div
+//                   className={`w-14 h-14 rounded-xl ${panel.color} flex items-center justify-center mb-3`}
+//                 >
+//                   <div className={panel.iconColor}>{panel.icon}</div>
+//                 </div>
+//                 <span className="text-sm font-medium text-gray-700 text-center">
+//                   {panel.name}
+//                 </span>
+//               </div>
+//             </Link>
+//           ))}
+//         </div>
+//       </main>
+
+//       <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 flex justify-around items-center p-2 shadow-lg">
+//         {allowedNavItems.map((item, index) => (
+//           <Link
+//             to={item.path}
+//             key={index}
+//             className="p-2 rounded-full text-gray-500 active:text-gray-700 transition-colors focus:outline-none"
+//             aria-label={item.name}
+//           >
+//             <div className={`p-2 ${item.iconColor}`}>{item.navIcon}</div>
+//           </Link>
+//         ))}
+//       </nav>
+//     </div>
+//   );
+// }
+
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -3082,7 +3410,7 @@ export default function Home() {
       path: "/dashboard",
       icon: <MdOutlineDashboard size={24} />,
       roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report"],
-      color: "bg-blue-100",
+      color: "bg-gradient-to-br from-blue-50 to-indigo-100",
       iconColor: "text-blue-600",
       navIcon: <MdOutlineDashboard size={20} />,
       description: "Overview of all operations"
@@ -3092,7 +3420,7 @@ export default function Home() {
       path: "/plantmaster",
       icon: <MdOutlineWarehouse size={24} />,
       roles: ["Owner", "Admin"],
-      color: "bg-indigo-100",
+      color: "bg-gradient-to-br from-indigo-50 to-purple-100",
       iconColor: "text-indigo-600",
       navIcon: <MdOutlineWarehouse size={20} />,
       description: "Manage plant locations"
@@ -3102,7 +3430,7 @@ export default function Home() {
       path: "/usermaster",
       icon: <RiUserSettingsLine size={24} />,
       roles: ["Owner", "Admin"],
-      color: "bg-teal-100",
+      color: "bg-gradient-to-br from-teal-50 to-cyan-100",
       iconColor: "text-teal-600",
       navIcon: <RiUserSettingsLine size={20} />,
       description: "Manage system users"
@@ -3112,7 +3440,7 @@ export default function Home() {
       path: "/userregister",
       icon: <BsShieldLock size={24} />,
       roles: ["Owner", "Admin"],
-      color: "bg-cyan-100",
+      color: "bg-gradient-to-br from-cyan-50 to-sky-100",
       iconColor: "text-cyan-600",
       navIcon: <BsShieldLock size={20} />,
       description: "Register new users"
@@ -3122,7 +3450,7 @@ export default function Home() {
       path: "/truck",
       icon: <RiTruckLine size={24} />,
       roles: ["Owner", "Admin", "Dispatch"],
-      color: "bg-orange-100",
+      color: "bg-gradient-to-br from-orange-50 to-amber-100",
       iconColor: "text-orange-600",
       navIcon: <RiTruckLine size={20} />,
       description: "Manage truck movements"
@@ -3132,7 +3460,7 @@ export default function Home() {
       path: "/truckfind",
       icon: <FiSearch size={24} />,
       roles: ["Owner", "Admin", "Dispatch"],
-      color: "bg-red-100",
+      color: "bg-gradient-to-br from-red-50 to-rose-100",
       iconColor: "text-red-600",
       navIcon: <FiSearch size={20} />,
       description: "Track truck locations"
@@ -3142,7 +3470,7 @@ export default function Home() {
       path: "/gate",
       icon: <BsDoorOpen size={24} />,
       roles: ["Owner", "Admin", "GateKeeper"],
-      color: "bg-purple-100",
+      color: "bg-gradient-to-br from-purple-50 to-violet-100",
       iconColor: "text-purple-600",
       navIcon: <BsDoorOpen size={20} />,
       description: "Control gate access"
@@ -3152,7 +3480,7 @@ export default function Home() {
       path: "/loader",
       icon: <PiPackageLight size={24} />,
       roles: ["Owner", "Admin", "Loader"],
-      color: "bg-amber-100",
+      color: "bg-gradient-to-br from-amber-50 to-yellow-100",
       iconColor: "text-amber-600",
       navIcon: <PiPackageLight size={20} />,
       description: "Manage loading operations"
@@ -3162,7 +3490,7 @@ export default function Home() {
       path: "/reports",
       icon: <MdOutlineAnalytics size={24} />,
       roles: ["Owner", "Admin", "Report"],
-      color: "bg-green-100",
+      color: "bg-gradient-to-br from-green-50 to-emerald-100",
       iconColor: "text-green-600",
       navIcon: <MdOutlineAnalytics size={20} />,
       description: "View operational reports"
@@ -3172,7 +3500,7 @@ export default function Home() {
       path: "/truckshedule",
       icon: <BsCalendarCheck size={24} />,
       roles: ["Owner", "Admin", "Report"],
-      color: "bg-pink-100",
+      color: "bg-gradient-to-br from-pink-50 to-rose-100",
       iconColor: "text-pink-600",
       navIcon: <BsCalendarCheck size={20} />,
       description: "View truck schedules"
@@ -3182,7 +3510,7 @@ export default function Home() {
       path: "/staff",
       icon: <HiOutlineUserGroup size={24} />,
       roles: ["Owner", "Admin"],
-      color: "bg-violet-100",
+      color: "bg-gradient-to-br from-violet-50 to-purple-100",
       iconColor: "text-violet-600",
       navIcon: <HiOutlineUserGroup size={20} />,
       description: "Manage staff members"
@@ -3192,7 +3520,7 @@ export default function Home() {
       path: "/timeclock",
       icon: <FiClock size={24} />,
       roles: ["Owner", "Admin", "Dispatch"],
-      color: "bg-emerald-100",
+      color: "bg-gradient-to-br from-emerald-50 to-teal-100",
       iconColor: "text-emerald-600",
       navIcon: <FiClock size={20} />,
       description: "Track working hours"
@@ -3234,51 +3562,54 @@ export default function Home() {
   // Desktop view
   if (!isMobile) {
     return (
-      <div className="min-h-screen bg-gray-50 font-sans">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
-                Welcome back, <span className="text-blue-600">{userName}</span>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 font-inter">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+            <div className="space-y-2">
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 tracking-tight">
+                Welcome back, <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{userName}</span>
               </h1>
-              <p className="text-gray-500">
+              <p className="text-lg text-slate-500 font-medium">
                 {formatDate(currentTime)} • {formatTime(currentTime)}
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border border-gray-200">
-                <span className="text-blue-600 font-medium">
+              <div className="w-12 h-12 rounded-2xl bg-white/70 backdrop-blur-sm shadow-lg shadow-blue-500/10 flex items-center justify-center border border-white/20 ring-1 ring-slate-900/5">
+                <span className="text-blue-600 font-bold text-lg">
                   {userName.charAt(0).toUpperCase()}
                 </span>
               </div>
             </div>
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {allowedPanels.map((panel, index) => (
               <Link
                 to={panel.path}
                 key={index}
-                className="group relative no-underline focus:outline-none transition-transform hover:-translate-y-1"
+                className="group relative no-underline focus:outline-none transition-all duration-500 hover:-translate-y-2"
               >
-                <div className="h-full rounded-xl p-6 bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-blue-100 flex flex-col">
+                <div className="h-full rounded-3xl p-8 bg-white/60 backdrop-blur-sm shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 border border-white/20 ring-1 ring-slate-900/5 hover:ring-blue-500/20 flex flex-col overflow-hidden relative">
+                  {/* Subtle background pattern */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
+                  
                   <div
-                    className={`w-14 h-14 rounded-xl mb-5 flex items-center justify-center ${panel.color} transition-transform duration-300 group-hover:scale-110`}
+                    className={`w-16 h-16 rounded-2xl mb-6 flex items-center justify-center ${panel.color} transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 relative z-10 shadow-lg`}
                   >
-                    <div className={`${panel.iconColor} transition-colors group-hover:text-blue-600`}>{panel.icon}</div>
+                    <div className={`${panel.iconColor} transition-all duration-300 group-hover:scale-110`}>{panel.icon}</div>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                  <h3 className="text-xl font-bold text-slate-800 mb-2 relative z-10">
                     {panel.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-4">{panel.description}</p>
-                  <div className="mt-auto flex justify-between items-center">
-                    <span className="text-xs font-medium px-2 py-1 rounded bg-gray-50 text-gray-500">
+                  <p className="text-sm text-slate-600 mb-6 leading-relaxed relative z-10">{panel.description}</p>
+                  <div className="mt-auto flex justify-between items-center relative z-10">
+                    <span className="text-xs font-semibold px-3 py-2 rounded-xl bg-slate-100/80 text-slate-600 backdrop-blur-sm">
                       Access module
                     </span>
-                    <div className="text-gray-300 group-hover:text-blue-400 transition-colors">
+                    <div className="text-slate-400 group-hover:text-blue-500 transition-all duration-300 group-hover:translate-x-1">
                       <svg
-                        width="20"
-                        height="20"
+                        width="22"
+                        height="22"
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -3286,7 +3617,7 @@ export default function Home() {
                         <path
                           d="M9 18L15 12L9 6"
                           stroke="currentColor"
-                          strokeWidth="2"
+                          strokeWidth="2.5"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
@@ -3298,8 +3629,13 @@ export default function Home() {
             ))}
           </div>
 
-          <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-            <p>Lemon Logistics ERP • v2.5 • {new Date().getFullYear()}</p>
+          <footer className="mt-20 pt-8 border-t border-slate-200/60 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 backdrop-blur-sm border border-white/20 shadow-sm">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+              <p className="text-sm font-medium text-slate-600">
+                Lemon Logistics ERP • v2.5 • {new Date().getFullYear()}
+              </p>
+            </div>
           </footer>
         </div>
       </div>
@@ -3308,14 +3644,14 @@ export default function Home() {
 
   // Mobile View
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 font-sans">
-      <main className="p-4">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-xl font-semibold text-gray-800">
-              Hello, {userName}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pb-24 font-inter">
+      <main className="p-6">
+        <div className="flex justify-between items-center mb-8">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
+              Hello, <span className="text-blue-600">{userName}</span>
             </h1>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-sm text-slate-500 font-medium">
               {currentTime.toLocaleDateString("en-US", {
                 weekday: "short",
                 month: "short",
@@ -3323,25 +3659,28 @@ export default function Home() {
               })}
             </p>
           </div>
-          <div className="text-sm font-medium text-gray-700 bg-white rounded-full px-3 py-1 shadow-sm border border-gray-200">
+          <div className="text-sm font-bold text-slate-700 bg-white/70 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-lg shadow-blue-500/10 border border-white/20">
             {formatTime(currentTime)}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {allowedPanels.map((panel, idx) => (
             <Link
               to={panel.path}
               key={idx}
-              className="no-underline active:scale-95 transition-transform focus:outline-none"
+              className="no-underline active:scale-95 transition-all duration-300 focus:outline-none group"
             >
-              <div className="bg-white rounded-xl p-4 shadow-sm h-full flex flex-col items-center border border-gray-100">
+              <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 shadow-xl shadow-slate-200/50 h-full flex flex-col items-center border border-white/20 ring-1 ring-slate-900/5 group-hover:shadow-2xl group-hover:shadow-blue-500/20 transition-all duration-300 group-active:shadow-lg relative overflow-hidden">
+                {/* Subtle background pattern */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none"></div>
+                
                 <div
-                  className={`w-14 h-14 rounded-xl ${panel.color} flex items-center justify-center mb-3`}
+                  className={`w-16 h-16 rounded-2xl ${panel.color} flex items-center justify-center mb-4 shadow-lg transition-transform duration-300 group-hover:scale-110 relative z-10`}
                 >
                   <div className={panel.iconColor}>{panel.icon}</div>
                 </div>
-                <span className="text-sm font-medium text-gray-700 text-center">
+                <span className="text-sm font-bold text-slate-700 text-center leading-snug relative z-10">
                   {panel.name}
                 </span>
               </div>
@@ -3350,15 +3689,15 @@ export default function Home() {
         </div>
       </main>
 
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 flex justify-around items-center p-2 shadow-lg">
+      <nav className="fixed bottom-6 left-6 right-6 bg-white/80 backdrop-blur-xl border border-white/20 rounded-3xl flex justify-around items-center p-2 shadow-2xl shadow-slate-900/10 ring-1 ring-slate-900/5">
         {allowedNavItems.map((item, index) => (
           <Link
             to={item.path}
             key={index}
-            className="p-2 rounded-full text-gray-500 active:text-gray-700 transition-colors focus:outline-none"
+            className="p-3 rounded-2xl text-slate-500 active:text-slate-700 transition-all duration-300 focus:outline-none hover:bg-white/60 active:scale-95 group"
             aria-label={item.name}
           >
-            <div className={`p-2 ${item.iconColor}`}>{item.navIcon}</div>
+            <div className={`p-1 ${item.iconColor} transition-all duration-300 group-hover:scale-110`}>{item.navIcon}</div>
           </Link>
         ))}
       </nav>
