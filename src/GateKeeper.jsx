@@ -2456,19 +2456,19 @@ function GateKeeper() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 font-inter">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 font-sans">
       <CancelButton />
       
-      {/* Header */}
-      <div className="bg-white/60 backdrop-blur-sm shadow-sm border-b border-white/20 sticky top-0 z-40">
+      {/* Clean Header */}
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Gate Control Center</h1>
-              <p className="text-slate-600 mt-1">Manage truck check-ins and departures</p>
+              <h1 className="text-3xl font-bold text-gray-900">Gate Control Center</h1>
+              <p className="text-gray-600 mt-1">Manage truck check-ins and departures</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -2480,14 +2480,14 @@ function GateKeeper() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Left Panel - Available Trucks */}
-          <div className="xl:col-span-3 space-y-6">
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-xl shadow-slate-200/50 border border-white/20 ring-1 ring-slate-900/5">
-              <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 </div>
@@ -2498,7 +2498,7 @@ function GateKeeper() {
                 <select 
                   value={selectedPlant} 
                   onChange={handlePlantChange} 
-                  className="w-full bg-white/80 backdrop-blur-sm border-2 border-slate-200 rounded-2xl px-4 py-4 text-slate-700 shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 appearance-none"
+                  className="w-full bg-white border-2 border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   disabled={isLoading}
                 >
                   <option value="">Select Plant Location</option>
@@ -2506,42 +2506,37 @@ function GateKeeper() {
                     <option key={i} value={getPlantName(plant)}>{getPlantName(plant)}</option>
                   ))}
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                  <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
                 {isLoading && (
-                  <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center rounded-2xl">
-                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
+                  <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center rounded-lg">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
                   </div>
                 )}
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-slate-700 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="text-md font-semibold text-gray-700 flex items-center gap-2">
+                  <div className="w-6 h-6 rounded bg-blue-100 flex items-center justify-center">
+                    <svg className="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2v0a2 2 0 01-2-2v-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                     </svg>
                   </div>
                   Available Trucks
                 </h3>
                 
-                <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-4 max-h-80 overflow-y-auto border border-slate-200/50 custom-scrollbar">
+                <div className="bg-gray-50 rounded-lg p-3 max-h-72 overflow-y-auto">
                   {truckNumbers.length === 0 ? (
-                    <div className="text-center py-12">
-                      <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mx-auto mb-4">
-                        <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="text-center py-8">
+                      <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-3">
+                        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2v0a2 2 0 01-2-2v-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                         </svg>
                       </div>
-                      <p className="text-slate-500 font-medium">
+                      <p className="text-gray-500 text-sm">
                         {selectedPlant ? 'No trucks available' : 'Select a plant to view trucks'}
                       </p>
                     </div>
                   ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {truckNumbers.map((t, i) => {
                         const truckNo = getTruckNo(t);
                         const isSelected = formData.truckNo === truckNo;
@@ -2550,38 +2545,27 @@ function GateKeeper() {
                             key={i}
                             onClick={() => handleTruckSelect(truckNo)}
                             disabled={isLoading}
-                            className={`w-full text-left p-4 rounded-xl transition-all duration-300 flex items-center gap-4 group ${
+                            className={`w-full text-left p-3 rounded-lg transition-all duration-200 flex items-center gap-3 ${
                               isSelected
-                                ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 scale-105'
-                                : 'bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 border border-slate-200/50 text-slate-700 hover:scale-102'
-                            } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+                                ? 'bg-blue-600 text-white shadow-md'
+                                : 'bg-white hover:bg-blue-50 border border-gray-200 text-gray-700 hover:border-blue-300'
+                            } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                           >
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                              isSelected 
-                                ? 'bg-white/20 backdrop-blur-sm' 
-                                : 'bg-gradient-to-br from-blue-100 to-indigo-100 group-hover:from-blue-200 group-hover:to-indigo-200'
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                              isSelected ? 'bg-blue-500' : 'bg-blue-100'
                             }`}>
-                              <svg className={`w-5 h-5 transition-colors duration-300 ${
-                                isSelected ? 'text-white' : 'text-blue-600'
-                              }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-blue-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2v0a2 2 0 01-2-2v-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                               </svg>
                             </div>
                             <div className="flex-1">
-                              <div className={`font-bold text-lg ${isSelected ? 'text-white' : 'text-slate-800'}`}>
+                              <div className={`font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
                                 {truckNo}
                               </div>
-                              <div className={`text-sm ${isSelected ? 'text-blue-100' : 'text-slate-500'}`}>
+                              <div className={`text-xs ${isSelected ? 'text-blue-100' : 'text-gray-500'}`}>
                                 Available for processing
                               </div>
                             </div>
-                            {isSelected && (
-                              <div className="text-white">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                            )}
                           </button>
                         );
                       })}
@@ -2593,34 +2577,34 @@ function GateKeeper() {
           </div>
 
           {/* Center Panel - Main Operations */}
-          <div className="xl:col-span-6 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             {/* Truck Visualization */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-xl shadow-slate-200/50 border border-white/20 ring-1 ring-slate-900/5">
-              <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
                 Load Visualization
               </h2>
               
-              <div className="relative h-64 w-full bg-gradient-to-br from-slate-100 to-blue-100 rounded-2xl overflow-hidden shadow-inner border-2 border-slate-200/50">
-                {/* Quantity Bars */}
+              <div className="relative h-56 w-full bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg overflow-hidden border-2 border-blue-200">
+                {/* Quantity Bars - Positioned exactly like original */}
                 <div className="absolute bottom-[51px] left-[50px] h-[75px] w-[calc(100%-170px)] max-w-[370px] flex items-end gap-1 z-10">
                   {quantityPanels.map((panel, index) => {
                     const maxHeight = Math.max(...quantityPanels.map(p => p.quantity || 0), 1);
                     const heightPercent = (panel.quantity / maxHeight) * 100;
-                    const gradients = [
-                      'bg-gradient-to-t from-emerald-500 to-emerald-400 shadow-emerald-500/50',
-                      'bg-gradient-to-t from-blue-500 to-blue-400 shadow-blue-500/50',
-                      'bg-gradient-to-t from-amber-500 to-amber-400 shadow-amber-500/50',
-                      'bg-gradient-to-t from-rose-500 to-rose-400 shadow-rose-500/50'
+                    const bgColors = [
+                      'bg-gradient-to-b from-green-400 to-green-600',
+                      'bg-gradient-to-b from-blue-400 to-blue-600',
+                      'bg-gradient-to-b from-yellow-400 to-yellow-600',
+                      'bg-gradient-to-b from-red-400 to-red-600'
                     ];
                     return (
                       <div
                         key={index}
-                        className={`flex flex-col items-center justify-end text-white text-xs ${gradients[index % gradients.length]} rounded-t-xl transition-all duration-500 transform hover:scale-110 hover:shadow-lg cursor-pointer backdrop-blur-sm`}
+                        className={`flex flex-col items-center justify-end text-white text-xs ${bgColors[index % bgColors.length]} rounded-t-lg transition-transform hover:scale-105 cursor-pointer shadow-lg`}
                         style={{ 
                           height: `${heightPercent}%`, 
                           width: `${100 / quantityPanels.length}%`,
@@ -2629,8 +2613,8 @@ function GateKeeper() {
                         title={`${panel.plantname}: ${panel.quantity} panels`}
                       >
                         <div className="flex flex-col items-center p-1">
-                          <span className="font-bold text-sm">{panel.quantity}</span>
-                          <span className="text-[10px] text-center leading-tight font-medium">{panel.plantname.split(' ')[0]}</span>
+                          <span className="font-bold">{panel.quantity}</span>
+                          <span className="text-[8px] text-center leading-tight">{panel.plantname.split(' ')[0]}</span>
                         </div>
                       </div>
                     );
@@ -2641,13 +2625,13 @@ function GateKeeper() {
                 <img 
                   src={truckImage} 
                   alt="Truck" 
-                  className="absolute bottom-0 left-0 w-full h-auto object-contain z-0 filter drop-shadow-lg" 
+                  className="absolute bottom-0 left-0 w-full h-auto object-contain z-0" 
                   style={{ height: '65%' }} 
                 />
                 
                 {/* Total Quantity Badge */}
                 {quantityPanels.length > 0 && (
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-bold text-slate-800 shadow-lg border border-white/20">
+                  <div className="absolute top-2 left-2 bg-white bg-opacity-90 px-3 py-1 rounded-full text-sm font-bold text-blue-800 shadow-sm">
                     Total: {quantityPanels.reduce((acc, p) => acc + (p.quantity || 0), 0)} panels
                   </div>
                 )}
@@ -2656,10 +2640,10 @@ function GateKeeper() {
 
             {/* Route Information */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-4 rounded-2xl border border-blue-200/50 shadow-sm">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 rounded bg-blue-500 flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
                   </div>
@@ -2668,10 +2652,10 @@ function GateKeeper() {
                 <div className="text-lg font-bold text-blue-900 truncate">{fromPlant}</div>
               </div>
               
-              <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-4 rounded-2xl border border-green-200/50 shadow-sm">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 rounded bg-green-500 flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </div>
@@ -2682,26 +2666,26 @@ function GateKeeper() {
             </div>
 
             {/* Form Section */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-xl shadow-slate-200/50 border border-white/20 ring-1 ring-slate-900/5">
-              <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 Gate Pass Details
               </h2>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Truck Number Input */}
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">Truck Number</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">Truck Number</label>
                   <input 
                     name="truckNo" 
                     value={formData.truckNo} 
                     onChange={handleChange} 
                     placeholder="Select a truck from the available list" 
-                    className="w-full bg-slate-50 border-2 border-slate-200 px-4 py-4 rounded-2xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-slate-700 font-medium"
+                    className="w-full bg-gray-50 border-2 border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-700"
                     readOnly 
                   />
                 </div>
@@ -2709,25 +2693,25 @@ function GateKeeper() {
                 {/* Date and Invoice Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Dispatch Date</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Dispatch Date</label>
                     <input 
                       name="dispatchDate" 
                       type="date" 
                       value={formData.dispatchDate} 
                       onChange={handleChange} 
-                      className="w-full bg-white/80 backdrop-blur-sm border-2 border-slate-200 px-4 py-4 rounded-2xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-slate-700" 
+                      className="w-full bg-white border-2 border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-700" 
                     />
                   </div>
                   
                   {checkedInTrucks.some(t => getTruckNo(t) === formData.truckNo) && (
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Invoice Number</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-1">Invoice Number</label>
                       <input 
                         name="invoiceNo" 
                         value={formData.invoiceNo} 
                         onChange={handleChange} 
                         placeholder="Enter invoice number" 
-                        className="w-full bg-white/80 backdrop-blur-sm border-2 border-slate-200 px-4 py-4 rounded-2xl shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-slate-700"
+                        className="w-full bg-white border-2 border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-700"
                       />
                     </div>
                   )}
@@ -2735,33 +2719,33 @@ function GateKeeper() {
 
                 {/* Remarks */}
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">System Remarks</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1">System Remarks</label>
                   <textarea 
                     name="remarks" 
                     readOnly 
                     value={formData.remarks} 
-                    className="w-full bg-slate-50 border-2 border-slate-200 px-4 py-4 rounded-2xl shadow-sm text-slate-600 resize-none" 
+                    className="w-full bg-gray-50 border-2 border-gray-300 px-4 py-3 rounded-lg text-gray-600 resize-none" 
                     rows="3" 
                   />
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-4 pt-4">
+                <div className="flex gap-4 pt-2">
                   <button 
                     onClick={() => handleSubmit('Check In')} 
                     disabled={isLoading || !formData.truckNo}
-                    className={`flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center gap-3 font-bold text-lg ${
-                      isLoading || !formData.truckNo ? 'opacity-60 cursor-not-allowed' : 'hover:scale-105 active:scale-95'
+                    className={`flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:shadow-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 flex items-center justify-center gap-2 font-semibold ${
+                      isLoading || !formData.truckNo ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
                     }`}
                   >
                     {isLoading ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                         Processing...
                       </>
                     ) : (
                       <>
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Check In
@@ -2772,18 +2756,18 @@ function GateKeeper() {
                   <button 
                     onClick={() => handleSubmit('Check Out')} 
                     disabled={isLoading || !formData.truckNo}
-                    className={`flex-1 bg-gradient-to-r from-rose-500 to-red-600 text-white py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl hover:from-rose-600 hover:to-red-700 transition-all duration-300 flex items-center justify-center gap-3 font-bold text-lg ${
-                      isLoading || !formData.truckNo ? 'opacity-60 cursor-not-allowed' : 'hover:scale-105 active:scale-95'
+                    className={`flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-3 px-6 rounded-lg shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 flex items-center justify-center gap-2 font-semibold ${
+                      isLoading || !formData.truckNo ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
                     }`}
                   >
                     {isLoading ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                         Processing...
                       </>
                     ) : (
                       <>
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Check Out
@@ -2796,31 +2780,31 @@ function GateKeeper() {
           </div>
 
           {/* Right Panel - Checked In Trucks */}
-          <div className="xl:col-span-3">
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-xl shadow-slate-200/50 border border-white/20 ring-1 ring-slate-900/5 h-full">
-              <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 h-full">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 Checked In Trucks
               </h2>
               
-              <div className="bg-gradient-to-br from-slate-50 to-green-50 rounded-2xl p-4 max-h-96 overflow-y-auto border border-slate-200/50 custom-scrollbar">
+              <div className="bg-gray-50 rounded-lg p-3 max-h-80 overflow-y-auto">
                 {checkedInTrucks.length === 0 ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 rounded-full bg-green-200 flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <p className="text-slate-500 font-medium">
+                    <p className="text-gray-500 text-sm">
                       {selectedPlant ? 'No trucks checked in' : 'Select a plant to view checked-in trucks'}
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {checkedInTrucks.map((t, i) => {
                       const truckNo = getTruckNo(t);
                       const isSelected = formData.truckNo === truckNo;
@@ -2829,35 +2813,31 @@ function GateKeeper() {
                           key={i}
                           onClick={() => handleCheckedInClick(truckNo)}
                           disabled={isLoading}
-                          className={`w-full text-left p-4 rounded-xl transition-all duration-300 flex items-center gap-4 group ${
+                          className={`w-full text-left p-3 rounded-lg transition-all duration-200 flex items-center gap-3 ${
                             isSelected
-                              ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25 scale-105'
-                              : 'bg-white/70 backdrop-blur-sm hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 border border-slate-200/50 text-slate-700 hover:scale-102'
-                          } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+                              ? 'bg-green-600 text-white shadow-md'
+                              : 'bg-white hover:bg-green-50 border border-gray-200 text-gray-700 hover:border-green-300'
+                          } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                         >
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                            isSelected 
-                              ? 'bg-white/20 backdrop-blur-sm' 
-                              : 'bg-gradient-to-br from-green-100 to-emerald-100 group-hover:from-green-200 group-hover:to-emerald-200'
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                            isSelected ? 'bg-green-500' : 'bg-green-100'
                           }`}>
-                            <svg className={`w-5 h-5 transition-colors duration-300 ${
-                              isSelected ? 'text-white' : 'text-green-600'
-                            }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-green-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className={`font-bold text-lg ${isSelected ? 'text-white' : 'text-slate-800'}`}>
+                            <div className={`font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
                               {truckNo}
                             </div>
-                            <div className={`text-sm ${isSelected ? 'text-green-100' : 'text-slate-500'}`}>
+                            <div className={`text-xs ${isSelected ? 'text-green-100' : 'text-gray-500'}`}>
                               Ready for checkout
                             </div>
                           </div>
                           {t.invoiceNo && (
-                            <div className={`px-2 py-1 rounded-lg text-xs font-bold ${
+                            <div className={`px-2 py-1 rounded text-xs font-semibold ${
                               isSelected 
-                                ? 'bg-white/20 text-white' 
+                                ? 'bg-green-500 text-white' 
                                 : 'bg-green-100 text-green-800'
                             }`}>
                               {t.invoiceNo}
@@ -2874,42 +2854,18 @@ function GateKeeper() {
         </div>
       </div>
 
-      {/* Custom Scrollbar Styles */}
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(148, 163, 184, 0.1);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(148, 163, 184, 0.4);
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(148, 163, 184, 0.6);
-        }
-      `}</style>
-
       <ToastContainer 
         position="top-right" 
-        autoClose={4000} 
+        autoClose={3000} 
         hideProgressBar={false}
-        newestOnTop={true}
+        newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="light"
-        toastStyle={{
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(148, 163, 184, 0.2)',
-          borderRadius: '16px',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-        }}
+        className="toast-container"
       />
     </div>
   );
