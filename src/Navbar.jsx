@@ -4813,6 +4813,492 @@
 // export default Navbar;///////////////////// final code underline
 
 
+// import { useState, useEffect } from 'react';
+// import { Link, useLocation } from 'react-router-dom';
+// import { 
+//   FiHome, 
+//   FiTruck, 
+//   FiUsers, 
+//   FiPieChart,
+//   FiLogOut,
+//   FiChevronDown,
+//   FiMenu,
+//   FiX,
+//   FiSettings,
+//   FiClock
+// } from 'react-icons/fi';
+// import { 
+//   MdOutlineWarehouse,
+//   MdOutlineSchedule
+// } from 'react-icons/md';
+// import { 
+//   BsShieldLock,
+//   BsBoxSeam
+// } from 'react-icons/bs';
+
+// // ✅ Custom Hook for compact layout
+// const useCompactLayout = () => {
+//   const [isCompact, setIsCompact] = useState(false);
+
+//   useEffect(() => {
+//     const updateLayout = () => {
+//       setIsCompact(window.innerWidth < 1280); // Tailwind 'xl'
+//     };
+//     updateLayout();
+//     window.addEventListener('resize', updateLayout);
+//     return () => window.removeEventListener('resize', updateLayout);
+//   }, []);
+
+//   return isCompact;
+// };
+
+// const Navbar = () => {
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//   const [activeDropdown, setActiveDropdown] = useState(null);
+//   const [userRole, setUserRole] = useState(null);
+//   const [moduleRights, setModuleRights] = useState([]);
+//   const location = useLocation();
+//   const isCompactLayout = useCompactLayout(); // ✅ Use custom hook
+
+//   useEffect(() => {
+//     setUserRole(localStorage.getItem('userRole'));
+//     const rights = localStorage.getItem('moduleRights');
+//     setModuleRights(rights ? rights.split(',').map(r => r.trim()) : []);
+//   }, []);
+
+//   const handleLogout = () => {
+//     localStorage.clear();
+//     window.location.href = "/";
+//   };
+
+//   const hasAccess = (requiredRoles) => {
+//     if (!userRole) return false;
+//     const userRoles = userRole.split(',').map(r => r.trim());
+//     return requiredRoles.some(role => userRoles.includes(role) || moduleRights.includes(role));
+//   };
+
+//   const filterSubItems = (subItems) => {
+//     return subItems.filter(subItem => {
+//       if (subItem.path === '/plantmaster') {
+//         return hasAccess(['Owner', 'Admin', 'UserMaster', 'PlantMaster']);
+//       }
+//       if (subItem.path === '/usermaster') {
+//         return hasAccess(['Owner', 'Admin', 'UserMaster']);
+//       }
+//       if (subItem.path === '/userregister') {
+//         return hasAccess(['Owner', 'Admin', 'UserRegister']);
+//       }
+//       if (subItem.path === '/truck') {
+//         return hasAccess(['Owner', 'Admin', 'Dispatch']);
+//       }
+//       if (subItem.path === '/truckfind') {
+//         return hasAccess(['Owner', 'Admin', 'Dispatch']);
+//       }
+//       if (subItem.path === '/gate') {
+//         return hasAccess(['Owner', 'Admin', 'GateKeeper']);
+//       }
+//       if (subItem.path === '/loader') {
+//         return hasAccess(['Owner', 'Admin', 'Loader']);
+//       }
+//       if (subItem.path === '/reports') {
+//         return hasAccess(['Owner', 'Admin', 'Report']);
+//       }
+//       if (subItem.path === '/truckshedule') {
+//         return hasAccess(['Owner', 'Admin', 'Report']);
+//       }
+//       return true;
+//     });
+//   };
+
+//   const menuItems = [
+//     {
+//       title: "Dashboard",
+//       path: "/dashboard",
+//       icon: <FiHome className="flex-shrink-0" size={18} />,
+//       roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report", "UserMaster", "UserRegister"]
+//     },
+//     {
+//       title: "Admin",
+//       icon: <FiSettings className="flex-shrink-0" size={18} />,
+//       roles: ["Owner", "Admin", "UserMaster", "UserRegister"],
+//       subItems: [
+//         { title: "Plant Master", path: "/plantmaster", icon: <MdOutlineWarehouse size={16} /> },
+//         { title: "User Management", path: "/usermaster", icon: <FiUsers size={16} /> },
+//         { title: "User Register", path: "/userregister", icon: <BsShieldLock size={16} /> }
+//       ]
+//     },
+//     {
+//       title: "Dispatch",
+//       icon: <FiTruck className="flex-shrink-0" size={18} />,
+//       roles: ["Owner", "Admin", "Dispatch"],
+//       subItems: [
+//         { title: "Truck Transaction", path: "/truck", icon: <FiTruck size={16} /> },
+//         { title: "Truck Locator", path: "/truckfind", icon: <FiClock size={16} /> }
+//       ]
+//     },
+//     {
+//       title: "Gate Control",
+//       path: "/gate",
+//       icon: <MdOutlineWarehouse className="flex-shrink-0" size={18} />,
+//       roles: ["Owner", "Admin", "GateKeeper"]
+//     },
+//     {
+//       title: "Loading",
+//       path: "/loader",
+//       icon: <BsBoxSeam className="flex-shrink-0" size={18} />,
+//       roles: ["Owner", "Admin", "Loader"]
+//     },
+//     {
+//       title: "Reports",
+//       icon: <FiPieChart className="flex-shrink-0" size={18} />,
+//       roles: ["Owner", "Admin", "Report"],
+//       subItems: [
+//         { title: "Operations Report", path: "/reports", icon: <FiPieChart size={16} /> },
+//         { title: "Schedule Board", path: "/truckshedule", icon: <MdOutlineSchedule size={16} /> }
+//       ]
+//     }
+//   ];
+
+//   const filteredMenuItems = menuItems
+//     .filter(item => hasAccess(item.roles))
+//     .map(item => {
+//       if (item.subItems) {
+//         return {
+//           ...item,
+//           subItems: filterSubItems(item.subItems)
+//         };
+//       }
+//       return item;
+//     })
+//     .filter(item => !item.subItems || item.subItems.length > 0);
+
+//   const closeAllDropdowns = () => {
+//     setActiveDropdown(null);
+//     setMobileMenuOpen(false);
+//   };
+
+//   useEffect(() => {
+//     const handleClickOutside = () => {
+//       if (activeDropdown !== null) {
+//         setActiveDropdown(null);
+//       }
+//     };
+//     document.addEventListener('click', handleClickOutside);
+//     return () => document.removeEventListener('click', handleClickOutside);
+//   }, [activeDropdown]);
+
+//   if (location.pathname === '/') return null;
+
+   
+//   return (
+//     <>
+//       {/* Desktop Navigation */}
+//       <nav className="hidden lg:block bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="flex justify-between h-16">
+//             <div className="flex items-center">
+//               <Link 
+//                 to="/dashboard" 
+//                 className="flex-shrink-0 flex items-center"
+//                 onClick={closeAllDropdowns}
+//               >
+//                 <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow">
+//                   <FiTruck className="h-5 w-5" />
+//                 </div>
+//                 <span className="ml-3 text-xl font-semibold text-gray-800">Lemon Logistics</span>
+//               </Link>
+              
+//               {/* Standard layout for 3+ menu items */}
+//               {!useCompactLayout && (
+//                 <div className="hidden lg:ml-6 lg:flex lg:space-x-1">
+//                   {filteredMenuItems.map((item, index) => (
+//                     <div key={index} className="relative">
+//                       {item.path ? (
+//                         <Link
+//                           to={item.path}
+//                           onClick={closeAllDropdowns}
+//                           className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+//                             location.pathname === item.path
+//                               ? 'bg-blue-50 text-blue-700 font-medium'
+//                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+//                           }`}
+//                         >
+//                           <span className="mr-2">{item.icon}</span>
+//                           {item.title}
+//                         </Link>
+//                       ) : (
+//                         <div className="relative">
+//                           <button
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               setActiveDropdown(activeDropdown === index ? null : index);
+//                             }}
+//                             className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+//                               activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
+//                                 ? 'bg-blue-50 text-blue-700 font-medium'
+//                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+//                             }`}
+//                           >
+//                             <span className="mr-2">{item.icon}</span>
+//                             {item.title}
+//                             <FiChevronDown 
+//                               className={`ml-1 h-4 w-4 transition-transform ${
+//                                 activeDropdown === index ? 'rotate-180' : ''
+//                               }`} 
+//                             />
+//                           </button>
+
+//                           {activeDropdown === index && (
+//                             <div 
+//                               className="absolute left-0 mt-1 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50 transition-all duration-200"
+//                               onClick={(e) => e.stopPropagation()}
+//                             >
+//                               {item.subItems.map((subItem, subIndex) => (
+//                                 <Link
+//                                   key={subIndex}
+//                                   to={subItem.path}
+//                                   onClick={closeAllDropdowns}
+//                                   className={`flex items-center px-4 py-2.5 text-sm transition-colors ${
+//                                     location.pathname === subItem.path
+//                                       ? 'bg-blue-50 text-blue-700 font-medium'
+//                                       : 'text-gray-700 hover:bg-gray-50'
+//                                   }`}
+//                                 >
+//                                   <span className="mr-3 text-gray-500">{subItem.icon}</span>
+//                                   {subItem.title}
+//                                 </Link>
+//                               ))}
+//                             </div>
+//                           )}
+//                         </div>
+//                       )}
+//                     </div>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+
+//             <div className="flex items-center space-x-2">
+//               {/* Compact layout for 1-2 menu items */}
+//               {useCompactLayout && (
+//                 <>
+//                   {filteredMenuItems.map((item, index) => (
+//                     <div key={index} className="relative">
+//                       {item.path ? (
+//                         <Link
+//                           to={item.path}
+//                           onClick={closeAllDropdowns}
+//                           className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+//                             location.pathname === item.path
+//                               ? 'bg-blue-50 text-blue-700 font-medium'
+//                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+//                           }`}
+//                         >
+//                           <span className="mr-2">{item.icon}</span>
+//                           {item.title}
+//                         </Link>
+//                       ) : (
+//                         <div className="relative">
+//                           <button
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               setActiveDropdown(activeDropdown === index ? null : index);
+//                             }}
+//                             className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+//                               activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
+//                                 ? 'bg-blue-50 text-blue-700 font-medium'
+//                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+//                             }`}
+//                           >
+//                             <span className="mr-2">{item.icon}</span>
+//                             {item.title}
+//                             <FiChevronDown 
+//                               className={`ml-1 h-4 w-4 transition-transform ${
+//                                 activeDropdown === index ? 'rotate-180' : ''
+//                               }`} 
+//                             />
+//                           </button>
+
+//                           {activeDropdown === index && (
+//                             <div 
+//                               className="absolute right-0 mt-1 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50 transition-all duration-200"
+//                               onClick={(e) => e.stopPropagation()}
+//                             >
+//                               {item.subItems.map((subItem, subIndex) => (
+//                                 <Link
+//                                   key={subIndex}
+//                                   to={subItem.path}
+//                                   onClick={closeAllDropdowns}
+//                                   className={`flex items-center px-4 py-2.5 text-sm transition-colors ${
+//                                     location.pathname === subItem.path
+//                                       ? 'bg-blue-50 text-blue-700 font-medium'
+//                                       : 'text-gray-700 hover:bg-gray-50'
+//                                   }`}
+//                                 >
+//                                   <span className="mr-3 text-gray-500">{subItem.icon}</span>
+//                                   {subItem.title}
+//                                 </Link>
+//                               ))}
+//                             </div>
+//                           )}
+//                         </div>
+//                       )}
+//                     </div>
+//                   ))}
+//                 </>
+//               )}
+
+//               <button
+//                 onClick={handleLogout}
+//                 className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors"
+//               >
+//                 <FiLogOut className="mr-2" />
+//                 Logout
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </nav>
+
+//       {/* Mobile Navigation */}
+//       <nav className="lg:hidden bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+//         <div className="px-4">
+//           <div className="flex justify-between h-16 items-center">
+//             <Link 
+//               to="/dashboard" 
+//               className="flex items-center"
+//               onClick={closeAllDropdowns}
+//             >
+//               <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow">
+//                 <FiTruck className="h-5 w-5" />
+//               </div>
+//               <span className="ml-3 text-lg font-semibold text-gray-800">Lemon Logistics</span>
+//             </Link>
+
+//             <button
+//               onClick={(e) => {
+//                 e.stopPropagation();
+//                 setMobileMenuOpen(!mobileMenuOpen);
+//               }}
+//               className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors"
+//             >
+//               {mobileMenuOpen ? (
+//                 <FiX className="h-6 w-6" />
+//               ) : (
+//                 <FiMenu className="h-6 w-6" />
+//               )}
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Mobile Sidebar */}
+//         <div 
+//           className={`fixed inset-0 z-40 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}
+//           onClick={(e) => {
+//             if (e.target === e.currentTarget) {
+//               closeAllDropdowns();
+//             }
+//           }}
+//         >
+//           <div className="relative flex flex-col w-80 max-w-xs h-full bg-white shadow-xl">
+//             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+//               <div className="text-xl font-semibold text-gray-800">Menu</div>
+//               <button
+//                 onClick={closeAllDropdowns}
+//                 className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
+//               >
+//                 <FiX className="h-6 w-6" />
+//               </button>
+//             </div>
+
+//             <div className="flex-1 overflow-y-auto py-4">
+//               {filteredMenuItems.map((item, index) => (
+//                 <div key={index} className="px-2">
+//                   {item.path ? (
+//                     <Link
+//                       to={item.path}
+//                       onClick={closeAllDropdowns}
+//                       className={`flex items-center px-4 py-3 rounded-lg mx-2 text-base font-medium ${
+//                         location.pathname === item.path
+//                           ? 'bg-blue-50 text-blue-700'
+//                           : 'text-gray-700 hover:bg-gray-100'
+//                       }`}
+//                     >
+//                       <span className="mr-3">{item.icon}</span>
+//                       {item.title}
+//                     </Link>
+//                   ) : (
+//                     <div>
+//                       <button
+//                         onClick={(e) => {
+//                           e.stopPropagation();
+//                           setActiveDropdown(activeDropdown === index ? null : index);
+//                         }}
+//                         className={`flex items-center justify-between w-full px-4 py-3 rounded-lg mx-2 text-base font-medium ${
+//                           activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
+//                             ? 'bg-blue-50 text-blue-700'
+//                             : 'text-gray-700 hover:bg-gray-100'
+//                         }`}
+//                       >
+//                         <div className="flex items-center">
+//                           <span className="mr-3">{item.icon}</span>
+//                           {item.title}
+//                         </div>
+//                         <FiChevronDown 
+//                           className={`h-5 w-5 transition-transform ${
+//                             activeDropdown === index ? 'rotate-180' : ''
+//                           }`} 
+//                         />
+//                       </button>
+
+//                       <div 
+//                         className={`overflow-hidden transition-all duration-300 ${
+//                           activeDropdown === index ? 'max-h-96' : 'max-h-0'
+//                         }`}
+//                       >
+//                         {item.subItems.map((subItem, subIndex) => (
+//                           <Link
+//                             key={subIndex}
+//                             to={subItem.path}
+//                             onClick={closeAllDropdowns}
+//                             className={`flex items-center pl-12 pr-4 py-2.5 text-base ${
+//                               location.pathname === subItem.path
+//                                 ? 'bg-blue-100 text-blue-700 font-medium'
+//                                 : 'text-gray-600 hover:bg-gray-50'
+//                             }`}
+//                           >
+//                             <span className="mr-3">{subItem.icon}</span>
+//                             {subItem.title}
+//                           </Link>
+//                         ))}
+//                       </div>
+//                     </div>
+//                   )}
+//                 </div>
+//               ))}
+//             </div>
+
+//             <div className="px-4 py-4 border-t border-gray-200">
+//               <button
+//                 onClick={handleLogout}
+//                 className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-gray-50 text-red-600 hover:bg-red-50 font-medium"
+//               >
+//                 <FiLogOut className="mr-3" />
+//                 Logout
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </nav>
+//     </>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -4836,13 +5322,12 @@ import {
   BsBoxSeam
 } from 'react-icons/bs';
 
-// ✅ Custom Hook for compact layout
 const useCompactLayout = () => {
   const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
     const updateLayout = () => {
-      setIsCompact(window.innerWidth < 1280); // Tailwind 'xl'
+      setIsCompact(window.innerWidth < 1280);
     };
     updateLayout();
     window.addEventListener('resize', updateLayout);
@@ -4858,7 +5343,7 @@ const Navbar = () => {
   const [userRole, setUserRole] = useState(null);
   const [moduleRights, setModuleRights] = useState([]);
   const location = useLocation();
-  const isCompactLayout = useCompactLayout(); // ✅ Use custom hook
+  const isCompactLayout = useCompactLayout();
 
   useEffect(() => {
     setUserRole(localStorage.getItem('userRole'));
@@ -4961,15 +5446,10 @@ const Navbar = () => {
 
   const filteredMenuItems = menuItems
     .filter(item => hasAccess(item.roles))
-    .map(item => {
-      if (item.subItems) {
-        return {
-          ...item,
-          subItems: filterSubItems(item.subItems)
-        };
-      }
-      return item;
-    })
+    .map(item => ({
+      ...item,
+      subItems: item.subItems ? filterSubItems(item.subItems) : null
+    }))
     .filter(item => !item.subItems || item.subItems.length > 0);
 
   const closeAllDropdowns = () => {
@@ -4989,17 +5469,16 @@ const Navbar = () => {
 
   if (location.pathname === '/') return null;
 
-   
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:block bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="hidden lg:flex bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <Link 
                 to="/dashboard" 
-                className="flex-shrink-0 flex items-center"
+                className="flex-shrink-0 flex items-center no-underline"
                 onClick={closeAllDropdowns}
               >
                 <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow">
@@ -5008,149 +5487,77 @@ const Navbar = () => {
                 <span className="ml-3 text-xl font-semibold text-gray-800">Lemon Logistics</span>
               </Link>
               
-              {/* Standard layout for 3+ menu items */}
-              {!useCompactLayout && (
-                <div className="hidden lg:ml-6 lg:flex lg:space-x-1">
-                  {filteredMenuItems.map((item, index) => (
-                    <div key={index} className="relative">
-                      {item.path ? (
-                        <Link
-                          to={item.path}
-                          onClick={closeAllDropdowns}
-                          className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            location.pathname === item.path
+              <div className="hidden lg:ml-6 lg:flex lg:space-x-1">
+                {filteredMenuItems.map((item, index) => (
+                  <div key={index} className="relative">
+                    {item.path ? (
+                      <Link
+                        to={item.path}
+                        onClick={closeAllDropdowns}
+                        className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                          location.pathname === item.path
+                            ? 'bg-blue-50 text-blue-700 font-medium'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                        }`}
+                      >
+                        <span className="mr-2">{item.icon}</span>
+                        {item.title}
+                      </Link>
+                    ) : (
+                      <div className="relative">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveDropdown(activeDropdown === index ? null : index);
+                          }}
+                          className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                            activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
                               ? 'bg-blue-50 text-blue-700 font-medium'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
                           }`}
                         >
                           <span className="mr-2">{item.icon}</span>
                           {item.title}
-                        </Link>
-                      ) : (
-                        <div className="relative">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveDropdown(activeDropdown === index ? null : index);
-                            }}
-                            className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                              activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
-                                ? 'bg-blue-50 text-blue-700 font-medium'
-                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
-                            }`}
-                          >
-                            <span className="mr-2">{item.icon}</span>
-                            {item.title}
-                            <FiChevronDown 
-                              className={`ml-1 h-4 w-4 transition-transform ${
-                                activeDropdown === index ? 'rotate-180' : ''
-                              }`} 
-                            />
-                          </button>
+                          <FiChevronDown 
+                            className={`ml-1 h-4 w-4 transition-transform duration-200 ${
+                              activeDropdown === index ? 'rotate-180' : ''
+                            }`} 
+                          />
+                        </button>
 
-                          {activeDropdown === index && (
-                            <div 
-                              className="absolute left-0 mt-1 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50 transition-all duration-200"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {item.subItems.map((subItem, subIndex) => (
-                                <Link
-                                  key={subIndex}
-                                  to={subItem.path}
-                                  onClick={closeAllDropdowns}
-                                  className={`flex items-center px-4 py-2.5 text-sm transition-colors ${
-                                    location.pathname === subItem.path
-                                      ? 'bg-blue-50 text-blue-700 font-medium'
-                                      : 'text-gray-700 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  <span className="mr-3 text-gray-500">{subItem.icon}</span>
-                                  {subItem.title}
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+                        {activeDropdown === index && (
+                          <div 
+                            className="absolute left-0 mt-1 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {item.subItems.map((subItem, subIndex) => (
+                              <Link
+                                key={subIndex}
+                                to={subItem.path}
+                                onClick={closeAllDropdowns}
+                                className={`flex items-center px-4 py-2.5 text-sm transition-colors duration-150 no-underline ${
+                                  location.pathname === subItem.path
+                                    ? 'bg-blue-50 text-blue-700 font-medium'
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                              >
+                                <span className="mr-3 text-gray-500">{subItem.icon}</span>
+                                {subItem.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="flex items-center space-x-2">
-              {/* Compact layout for 1-2 menu items */}
-              {useCompactLayout && (
-                <>
-                  {filteredMenuItems.map((item, index) => (
-                    <div key={index} className="relative">
-                      {item.path ? (
-                        <Link
-                          to={item.path}
-                          onClick={closeAllDropdowns}
-                          className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            location.pathname === item.path
-                              ? 'bg-blue-50 text-blue-700 font-medium'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
-                          }`}
-                        >
-                          <span className="mr-2">{item.icon}</span>
-                          {item.title}
-                        </Link>
-                      ) : (
-                        <div className="relative">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveDropdown(activeDropdown === index ? null : index);
-                            }}
-                            className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                              activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
-                                ? 'bg-blue-50 text-blue-700 font-medium'
-                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
-                            }`}
-                          >
-                            <span className="mr-2">{item.icon}</span>
-                            {item.title}
-                            <FiChevronDown 
-                              className={`ml-1 h-4 w-4 transition-transform ${
-                                activeDropdown === index ? 'rotate-180' : ''
-                              }`} 
-                            />
-                          </button>
-
-                          {activeDropdown === index && (
-                            <div 
-                              className="absolute right-0 mt-1 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50 transition-all duration-200"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {item.subItems.map((subItem, subIndex) => (
-                                <Link
-                                  key={subIndex}
-                                  to={subItem.path}
-                                  onClick={closeAllDropdowns}
-                                  className={`flex items-center px-4 py-2.5 text-sm transition-colors ${
-                                    location.pathname === subItem.path
-                                      ? 'bg-blue-50 text-blue-700 font-medium'
-                                      : 'text-gray-700 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  <span className="mr-3 text-gray-500">{subItem.icon}</span>
-                                  {subItem.title}
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </>
-              )}
-
+            <div className="flex items-center">
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors"
+                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors duration-150"
               >
                 <FiLogOut className="mr-2" />
                 Logout
@@ -5166,7 +5573,7 @@ const Navbar = () => {
           <div className="flex justify-between h-16 items-center">
             <Link 
               to="/dashboard" 
-              className="flex items-center"
+              className="flex items-center no-underline"
               onClick={closeAllDropdowns}
             >
               <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow">
@@ -5218,7 +5625,7 @@ const Navbar = () => {
                     <Link
                       to={item.path}
                       onClick={closeAllDropdowns}
-                      className={`flex items-center px-4 py-3 rounded-lg mx-2 text-base font-medium ${
+                      className={`flex items-center px-4 py-3 rounded-lg mx-2 text-base font-medium no-underline ${
                         location.pathname === item.path
                           ? 'bg-blue-50 text-blue-700'
                           : 'text-gray-700 hover:bg-gray-100'
@@ -5245,7 +5652,7 @@ const Navbar = () => {
                           {item.title}
                         </div>
                         <FiChevronDown 
-                          className={`h-5 w-5 transition-transform ${
+                          className={`h-5 w-5 transition-transform duration-200 ${
                             activeDropdown === index ? 'rotate-180' : ''
                           }`} 
                         />
@@ -5261,7 +5668,7 @@ const Navbar = () => {
                             key={subIndex}
                             to={subItem.path}
                             onClick={closeAllDropdowns}
-                            className={`flex items-center pl-12 pr-4 py-2.5 text-base ${
+                            className={`flex items-center pl-12 pr-4 py-2.5 text-base no-underline ${
                               location.pathname === subItem.path
                                 ? 'bg-blue-100 text-blue-700 font-medium'
                                 : 'text-gray-600 hover:bg-gray-50'
@@ -5281,7 +5688,7 @@ const Navbar = () => {
             <div className="px-4 py-4 border-t border-gray-200">
               <button
                 onClick={handleLogout}
-                className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-gray-50 text-red-600 hover:bg-red-50 font-medium"
+                className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-gray-50 text-red-600 hover:bg-red-50 font-medium transition-colors duration-150"
               >
                 <FiLogOut className="mr-3" />
                 Logout
