@@ -775,7 +775,8 @@ export default function Login() {
       if (res.data.success) {
         // ✅ Store in localStorage
         localStorage.setItem('username', res.data.username);
-        localStorage.setItem('userRole', res.data.role);
+       
+        localStorage.setItem("userRole", res.data.role.toLowerCase());
         localStorage.setItem('allowedPlants', res.data.allowedPlants);
 
         alert('Login successful');
