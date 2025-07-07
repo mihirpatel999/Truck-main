@@ -2461,27 +2461,308 @@
 // }////////// final 
 
 
+// import { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+// import { 
+//   MdOutlineWarehouse,
+//   MdOutlineDashboard,
+//   MdOutlineAnalytics
+// } from "react-icons/md";
+// import { 
+//   FiSearch
+// } from "react-icons/fi";
+// import { 
+//   BsDoorOpen,
+//   BsCalendarCheck
+// } from "react-icons/bs";
+// import { 
+//   PiPackageLight 
+// } from "react-icons/pi";
+// import { 
+//   RiTruckLine,
+//   RiUserSettingsLine
+// } from "react-icons/ri";
+
+// export default function Home() {
+//   const [isMobile, setIsMobile] = useState(false);
+//   const userRole = localStorage.getItem("userRole");
+//   const userName = localStorage.getItem("userName") || "User";
+//   const [currentTime, setCurrentTime] = useState(new Date());
+
+//   // Check screen size and update time
+//   useEffect(() => {
+//     const handleResize = () => {
+//       setIsMobile(window.innerWidth <= 768);
+//     };
+    
+//     handleResize();
+//     window.addEventListener("resize", handleResize);
+
+//     const timer = setInterval(() => {
+//       setCurrentTime(new Date());
+//     }, 60000);
+
+//     return () => {
+//       window.removeEventListener("resize", handleResize);
+//       clearInterval(timer);
+//     };
+//   }, []);
+
+//   // Panel configuration
+//   const panelList = [
+//     { 
+//       name: "Dashboard", 
+//       path: "/dashboard", 
+//       icon: <MdOutlineDashboard size={24} />, 
+//       roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report"],
+//       color: "bg-blue-100",
+//       iconColor: "text-blue-600",
+//       navIcon: <MdOutlineDashboard size={20} />
+//     },
+//     { 
+//       name: "Plant Master", 
+//       path: "/plantmaster", 
+//       icon: <MdOutlineWarehouse size={24} />, 
+//       roles: ["Owner", "Admin"],
+//       color: "bg-indigo-100",
+//       iconColor: "text-indigo-600",
+//       navIcon: <MdOutlineWarehouse size={20} />
+//     },
+//     { 
+//       name: "User Management", 
+//       path: "/usermaster", 
+//       icon: <RiUserSettingsLine size={24} />, 
+//       roles: ["Owner", "Admin"],
+//       color: "bg-teal-100",
+//       iconColor: "text-teal-600",
+//       navIcon: <RiUserSettingsLine size={20} />
+//     },
+//     { 
+//       name: "Truck Transaction", 
+//       path: "/truck", 
+//       icon: <RiTruckLine size={24} />, 
+//       roles: ["Owner", "Admin", "Dispatch"],
+//       color: "bg-orange-100",
+//       iconColor: "text-orange-600",
+//       navIcon: <RiTruckLine size={20} />
+//     },
+//     { 
+//       name: "Truck Locator", 
+//       path: "/truckfind", 
+//       icon: <FiSearch size={24} />, 
+//       roles: ["Owner", "Admin", "Dispatch"],
+//       color: "bg-red-100",
+//       iconColor: "text-red-600",
+//       navIcon: <FiSearch size={20} />
+//     },
+//     { 
+//       name: "Gate Control", 
+//       path: "/gate", 
+//       icon: <BsDoorOpen size={24} />, 
+//       roles: ["Owner", "Admin", "GateKeeper"],
+//       color: "bg-purple-100",
+//       iconColor: "text-purple-600",
+//       navIcon: <BsDoorOpen size={20} />
+//     },
+//     { 
+//       name: "Loading Dock", 
+//       path: "/loader", 
+//       icon: <PiPackageLight size={24} />, 
+//       roles: ["Owner", "Admin", "Loader"],
+//       color: "bg-amber-100",
+//       iconColor: "text-amber-600",
+//       navIcon: <PiPackageLight size={20} />
+//     },
+//     { 
+//       name: "Operations Report", 
+//       path: "/reports", 
+//       icon: <MdOutlineAnalytics size={24} />, 
+//       roles: ["Owner", "Admin", "Report"],
+//       color: "bg-green-100",
+//       iconColor: "text-green-600",
+//       navIcon: <MdOutlineAnalytics size={20} />
+//     },
+//     { 
+//       name: "Schedule Board", 
+//       path: "/truckshedule", 
+//       icon: <BsCalendarCheck size={24} />, 
+//       roles: ["Owner", "Admin", "Report"],
+//       color: "bg-pink-100",
+//       iconColor: "text-pink-600",
+//       navIcon: <BsCalendarCheck size={20} />
+//     },
+//   ];
+
+//   // Filter panels based on user role
+//   const allowedPanels = panelList.filter((panel) => {
+//     if (!userRole) return false;
+//     const userRoles = userRole.split(",").map((r) => r.trim());
+//     return userRoles.some((role) => panel.roles.includes(role));
+//   });
+
+//   // Filter navigation items for mobile bottom bar
+//   const allowedNavItems = panelList.filter((panel) => {
+//     if (!userRole) return false;
+//     const userRoles = userRole.split(",").map((r) => r.trim());
+//     return userRoles.some((role) => panel.roles.includes(role)) && 
+//            ["/dashboard", "/truck", "/reports", "/gate", "/loader"].includes(panel.path);
+//   });
+
+//   // Format time display
+//   const formatTime = (date) => {
+//     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+//   };
+
+//   // Desktop View
+//   if (!isMobile) {
+//     return (
+//       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+//           {/* Header */}
+//           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+//             <div>
+//               <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
+//                 Welcome back, <span className="text-blue-600">{userName}</span>
+//               </h1>
+//               <p className="text-gray-500">Manage your logistics operations efficiently</p>
+//             </div>
+//             <div className="flex items-center gap-4">
+//               <div className="text-right">
+//                 <div className="text-xl sm:text-2xl font-medium text-gray-700">
+//                   {formatTime(currentTime)}
+//                 </div>
+//                 <div className="text-sm text-gray-500">
+//                   {currentTime.toLocaleDateString('en-US', { 
+//                     weekday: 'long', 
+//                     month: 'long', 
+//                     day: 'numeric' 
+//                   })}
+//                 </div>
+//               </div>
+//               <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border border-gray-200">
+//                 <span className="text-blue-600 font-medium">
+//                   {userName.charAt(0).toUpperCase()}
+//                 </span>
+//               </div>
+//             </div>
+//           </header>
+
+//           {/* Dashboard Grid */}
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+//             {allowedPanels.map((panel, index) => (
+//               <Link
+//                 to={panel.path}
+//                 key={index}
+//                 className="group relative no-underline focus:outline-none"
+//               >
+//                 <div className="h-full rounded-xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-transparent flex flex-col">
+//                   <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center ${panel.color} transition-transform duration-300 group-hover:scale-110`}>
+//                     <div className={panel.iconColor}>
+//                       {panel.icon}
+//                     </div>
+//                   </div>
+//                   <h3 className="text-lg font-semibold text-gray-800 mb-1">
+//                     {panel.name}
+//                   </h3>
+//                   <p className="text-sm text-gray-500 mb-2">
+//                     Access module
+//                   </p>
+//                   <div className="mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 self-end">
+//                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                       <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+//                     </svg>
+//                   </div>
+//                 </div>
+//               </Link>
+//             ))}
+//           </div>
+
+//           {/* Footer */}
+//           <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+//             <p>Lemon Logistics ERP • v2.5 • {new Date().getFullYear()}</p>
+//           </footer>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   // Mobile View
+//   return (
+//     <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+//       {/* Main Content */}
+//       <main className="p-4">
+//         <div className="flex justify-between items-center mb-6">
+//           <div>
+//             <h1 className="text-xl font-semibold text-gray-800">Hello, {userName}</h1>
+//             <p className="text-xs text-gray-500 mt-1">
+//               {currentTime.toLocaleDateString('en-US', { 
+//                 weekday: 'short', 
+//                 month: 'short', 
+//                 day: 'numeric' 
+//               })}
+//             </p>
+//           </div>
+//           <div className="text-sm font-medium text-gray-700 bg-white rounded-full px-3 py-1 shadow-sm border border-gray-200">
+//             {formatTime(currentTime)}
+//           </div>
+//         </div>
+
+//         {/* Mobile Grid */}
+//         <div className="grid grid-cols-2 gap-3">
+//           {allowedPanels.map((panel, idx) => (
+//             <Link
+//               to={panel.path}
+//               key={idx}
+//               className="no-underline active:scale-95 transition-transform focus:outline-none"
+//             >
+//               <div className="bg-white rounded-xl p-4 shadow-sm h-full flex flex-col items-center border border-gray-100">
+//                 <div className={`w-14 h-14 rounded-xl ${panel.color} flex items-center justify-center mb-3`}>
+//                   <div className={panel.iconColor}>
+//                     {panel.icon}
+//                   </div>
+//                 </div>
+//                 <span className="text-sm font-medium text-gray-700 text-center">
+//                   {panel.name}
+//                 </span>
+//               </div>
+//             </Link>
+//           ))}
+//         </div>
+//       </main>
+
+//       {/* Bottom Navigation */}
+//       <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 flex justify-around items-center p-2 shadow-lg">
+//         {allowedNavItems.map((item, index) => (
+//           <Link 
+//             to={item.path} 
+//             key={index}
+//             className="p-2 rounded-full text-gray-500 active:text-gray-700 transition-colors focus:outline-none"
+//             aria-label={item.name}
+//           >
+//             <div className={`p-2 ${item.iconColor}`}>
+//               {item.navIcon}
+//             </div>
+//           </Link>
+//         ))}
+//       </nav>
+//     </div>
+//   );
+// }
+
+
+
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { 
+import {
   MdOutlineWarehouse,
   MdOutlineDashboard,
-  MdOutlineAnalytics
+  MdOutlineAnalytics,
 } from "react-icons/md";
-import { 
-  FiSearch
-} from "react-icons/fi";
-import { 
-  BsDoorOpen,
-  BsCalendarCheck
-} from "react-icons/bs";
-import { 
-  PiPackageLight 
-} from "react-icons/pi";
-import { 
-  RiTruckLine,
-  RiUserSettingsLine
-} from "react-icons/ri";
+import { FiSearch } from "react-icons/fi";
+import { BsDoorOpen, BsCalendarCheck } from "react-icons/bs";
+import { PiPackageLight } from "react-icons/pi";
+import { RiTruckLine, RiUserSettingsLine } from "react-icons/ri";
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
@@ -2489,12 +2770,11 @@ export default function Home() {
   const userName = localStorage.getItem("userName") || "User";
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // Check screen size and update time
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     handleResize();
     window.addEventListener("resize", handleResize);
 
@@ -2508,123 +2788,126 @@ export default function Home() {
     };
   }, []);
 
-  // Panel configuration
   const panelList = [
-    { 
-      name: "Dashboard", 
-      path: "/dashboard", 
-      icon: <MdOutlineDashboard size={24} />, 
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <MdOutlineDashboard size={24} />,
       roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report"],
       color: "bg-blue-100",
       iconColor: "text-blue-600",
-      navIcon: <MdOutlineDashboard size={20} />
+      navIcon: <MdOutlineDashboard size={20} />,
     },
-    { 
-      name: "Plant Master", 
-      path: "/plantmaster", 
-      icon: <MdOutlineWarehouse size={24} />, 
+    {
+      name: "Plant Master",
+      path: "/plantmaster",
+      icon: <MdOutlineWarehouse size={24} />,
       roles: ["Owner", "Admin"],
       color: "bg-indigo-100",
       iconColor: "text-indigo-600",
-      navIcon: <MdOutlineWarehouse size={20} />
+      navIcon: <MdOutlineWarehouse size={20} />,
     },
-    { 
-      name: "User Management", 
-      path: "/usermaster", 
-      icon: <RiUserSettingsLine size={24} />, 
+    {
+      name: "User Management",
+      path: "/usermaster",
+      icon: <RiUserSettingsLine size={24} />,
       roles: ["Owner", "Admin"],
       color: "bg-teal-100",
       iconColor: "text-teal-600",
-      navIcon: <RiUserSettingsLine size={20} />
+      navIcon: <RiUserSettingsLine size={20} />,
     },
-    { 
-      name: "Truck Transaction", 
-      path: "/truck", 
-      icon: <RiTruckLine size={24} />, 
+    {
+      name: "Truck Transaction",
+      path: "/truck",
+      icon: <RiTruckLine size={24} />,
       roles: ["Owner", "Admin", "Dispatch"],
       color: "bg-orange-100",
       iconColor: "text-orange-600",
-      navIcon: <RiTruckLine size={20} />
+      navIcon: <RiTruckLine size={20} />,
     },
-    { 
-      name: "Truck Locator", 
-      path: "/truckfind", 
-      icon: <FiSearch size={24} />, 
+    {
+      name: "Truck Locator",
+      path: "/truckfind",
+      icon: <FiSearch size={24} />,
       roles: ["Owner", "Admin", "Dispatch"],
       color: "bg-red-100",
       iconColor: "text-red-600",
-      navIcon: <FiSearch size={20} />
+      navIcon: <FiSearch size={20} />,
     },
-    { 
-      name: "Gate Control", 
-      path: "/gate", 
-      icon: <BsDoorOpen size={24} />, 
+    {
+      name: "Gate Control",
+      path: "/gate",
+      icon: <BsDoorOpen size={24} />,
       roles: ["Owner", "Admin", "GateKeeper"],
       color: "bg-purple-100",
       iconColor: "text-purple-600",
-      navIcon: <BsDoorOpen size={20} />
+      navIcon: <BsDoorOpen size={20} />,
     },
-    { 
-      name: "Loading Dock", 
-      path: "/loader", 
-      icon: <PiPackageLight size={24} />, 
+    {
+      name: "Loading Dock",
+      path: "/loader",
+      icon: <PiPackageLight size={24} />,
       roles: ["Owner", "Admin", "Loader"],
       color: "bg-amber-100",
       iconColor: "text-amber-600",
-      navIcon: <PiPackageLight size={20} />
+      navIcon: <PiPackageLight size={20} />,
     },
-    { 
-      name: "Operations Report", 
-      path: "/reports", 
-      icon: <MdOutlineAnalytics size={24} />, 
+    {
+      name: "Operations Report",
+      path: "/reports",
+      icon: <MdOutlineAnalytics size={24} />,
       roles: ["Owner", "Admin", "Report"],
       color: "bg-green-100",
       iconColor: "text-green-600",
-      navIcon: <MdOutlineAnalytics size={20} />
+      navIcon: <MdOutlineAnalytics size={20} />,
     },
-    { 
-      name: "Schedule Board", 
-      path: "/truckshedule", 
-      icon: <BsCalendarCheck size={24} />, 
+    {
+      name: "Schedule Board",
+      path: "/truckshedule",
+      icon: <BsCalendarCheck size={24} />,
       roles: ["Owner", "Admin", "Report"],
       color: "bg-pink-100",
       iconColor: "text-pink-600",
-      navIcon: <BsCalendarCheck size={20} />
+      navIcon: <BsCalendarCheck size={20} />,
     },
   ];
 
-  // Filter panels based on user role
+  // Fix: Case-insensitive userRole check
   const allowedPanels = panelList.filter((panel) => {
     if (!userRole) return false;
-    const userRoles = userRole.split(",").map((r) => r.trim());
-    return userRoles.some((role) => panel.roles.includes(role));
+    const userRoles = userRole.split(",").map((r) => r.trim().toLowerCase());
+    return userRoles.some((role) =>
+      panel.roles.map((r) => r.toLowerCase()).includes(role)
+    );
   });
 
-  // Filter navigation items for mobile bottom bar
   const allowedNavItems = panelList.filter((panel) => {
     if (!userRole) return false;
-    const userRoles = userRole.split(",").map((r) => r.trim());
-    return userRoles.some((role) => panel.roles.includes(role)) && 
-           ["/dashboard", "/truck", "/reports", "/gate", "/loader"].includes(panel.path);
+    const userRoles = userRole.split(",").map((r) => r.trim().toLowerCase());
+    return (
+      userRoles.some((role) =>
+        panel.roles.map((r) => r.toLowerCase()).includes(role)
+      ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader"].includes(panel.path)
+    );
   });
 
-  // Format time display
   const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  // Desktop View
+  // Desktop view
   if (!isMobile) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
                 Welcome back, <span className="text-blue-600">{userName}</span>
               </h1>
-              <p className="text-gray-500">Manage your logistics operations efficiently</p>
+              <p className="text-gray-500">
+                Manage your logistics operations efficiently
+              </p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
@@ -2632,10 +2915,10 @@ export default function Home() {
                   {formatTime(currentTime)}
                 </div>
                 <div className="text-sm text-gray-500">
-                  {currentTime.toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    month: 'long', 
-                    day: 'numeric' 
+                  {currentTime.toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </div>
               </div>
@@ -2647,7 +2930,6 @@ export default function Home() {
             </div>
           </header>
 
-          {/* Dashboard Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {allowedPanels.map((panel, index) => (
               <Link
@@ -2656,20 +2938,30 @@ export default function Home() {
                 className="group relative no-underline focus:outline-none"
               >
                 <div className="h-full rounded-xl p-5 bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-transparent flex flex-col">
-                  <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center ${panel.color} transition-transform duration-300 group-hover:scale-110`}>
-                    <div className={panel.iconColor}>
-                      {panel.icon}
-                    </div>
+                  <div
+                    className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center ${panel.color} transition-transform duration-300 group-hover:scale-110`}
+                  >
+                    <div className={panel.iconColor}>{panel.icon}</div>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-1">
                     {panel.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-2">
-                    Access module
-                  </p>
+                  <p className="text-sm text-gray-500 mb-2">Access module</p>
                   <div className="mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 self-end">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 18L15 12L9 6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -2677,7 +2969,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Footer */}
           <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
             <p>Lemon Logistics ERP • v2.5 • {new Date().getFullYear()}</p>
           </footer>
@@ -2689,16 +2980,17 @@ export default function Home() {
   // Mobile View
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans">
-      {/* Main Content */}
       <main className="p-4">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-xl font-semibold text-gray-800">Hello, {userName}</h1>
+            <h1 className="text-xl font-semibold text-gray-800">
+              Hello, {userName}
+            </h1>
             <p className="text-xs text-gray-500 mt-1">
-              {currentTime.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                month: 'short', 
-                day: 'numeric' 
+              {currentTime.toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
               })}
             </p>
           </div>
@@ -2707,7 +2999,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile Grid */}
         <div className="grid grid-cols-2 gap-3">
           {allowedPanels.map((panel, idx) => (
             <Link
@@ -2716,10 +3007,10 @@ export default function Home() {
               className="no-underline active:scale-95 transition-transform focus:outline-none"
             >
               <div className="bg-white rounded-xl p-4 shadow-sm h-full flex flex-col items-center border border-gray-100">
-                <div className={`w-14 h-14 rounded-xl ${panel.color} flex items-center justify-center mb-3`}>
-                  <div className={panel.iconColor}>
-                    {panel.icon}
-                  </div>
+                <div
+                  className={`w-14 h-14 rounded-xl ${panel.color} flex items-center justify-center mb-3`}
+                >
+                  <div className={panel.iconColor}>{panel.icon}</div>
                 </div>
                 <span className="text-sm font-medium text-gray-700 text-center">
                   {panel.name}
@@ -2730,18 +3021,15 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 flex justify-around items-center p-2 shadow-lg">
         {allowedNavItems.map((item, index) => (
-          <Link 
-            to={item.path} 
+          <Link
+            to={item.path}
             key={index}
             className="p-2 rounded-full text-gray-500 active:text-gray-700 transition-colors focus:outline-none"
             aria-label={item.name}
           >
-            <div className={`p-2 ${item.iconColor}`}>
-              {item.navIcon}
-            </div>
+            <div className={`p-2 ${item.iconColor}`}>{item.navIcon}</div>
           </Link>
         ))}
       </nav>
