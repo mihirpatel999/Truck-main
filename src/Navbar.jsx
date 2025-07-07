@@ -7322,11 +7322,20 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const hasModuleAccess = (module) => {
-    if (!userRole) return false;
-    const userRoles = userRole.split(',').map(r => r.trim());
-    return userRoles.includes(module);
-  };
+ const hasModuleAccess = (module) => {
+  if (!userRole) return false;
+  const userRoles = userRole.split(',').map(r => r.trim().toLowerCase());
+  return userRoles.includes(module.toLowerCase());
+};
+ 
+const canAccessRoute = (requiredRoute) => {
+  const roles = localStorage.getItem('userRole')
+    ?.split(',')
+    .map(r => r.trim().toLowerCase()) || [];
+
+  return roles.some(role => roleAccess[role]?.includes(requiredRoute.toLowerCase()));
+};
+
 
   const menuItems = [
     {
