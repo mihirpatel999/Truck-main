@@ -7282,6 +7282,151 @@
 
 
 
+// import { useState, useEffect } from 'react';
+// import { Link, useLocation, useNavigate } from 'react-router-dom';
+// import { 
+//   FiHome, 
+//   FiTruck, 
+//   FiUsers, 
+//   FiPieChart,
+//   FiLogOut,
+//   FiChevronDown,
+//   FiMenu,
+//   FiX,
+//   FiSettings,
+//   FiClock
+// } from 'react-icons/fi';
+// import { 
+//   MdOutlineWarehouse,
+//   MdOutlineSchedule
+// } from 'react-icons/md';
+// import { 
+//   BsShieldLock,
+//   BsBoxSeam
+// } from 'react-icons/bs';
+
+// const Navbar = () => {
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//   const [activeDropdown, setActiveDropdown] = useState(null);
+//   const [userRole, setUserRole] = useState(null);
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const role = localStorage.getItem('userRole');
+//     setUserRole(role);
+//   }, []);
+
+//   const handleLogout = () => {
+//     localStorage.clear();
+//     navigate("/");
+//   };
+
+//  const hasModuleAccess = (module) => {
+//   if (!userRole) return false;
+//   const userRoles = userRole.split(',').map(r => r.trim().toLowerCase());
+//   return userRoles.includes(module.toLowerCase());
+// };
+ 
+// const canAccessRoute = (requiredRoute) => {
+//   const roles = localStorage.getItem('userRole')
+//     ?.split(',')
+//     .map(r => r.trim().toLowerCase()) || [];
+
+//   return roles.some(role => roleAccess[role]?.includes(requiredRoute.toLowerCase()));
+// };
+
+
+//   const menuItems = [
+//     {
+//       title: "Dashboard",
+//       path: "/dashboard",
+//       icon: <FiHome className="flex-shrink-0" size={18} />,
+//       show: () => userRole && userRole.length > 0
+//     },
+//     {
+//       title: "Admin",
+//       icon: <FiSettings className="flex-shrink-0" size={18} />,
+//       show: () => hasModuleAccess('Admin') || hasModuleAccess('Owner') || 
+//                 hasModuleAccess('UserMaster') || hasModuleAccess('UserRegister') || 
+//                 hasModuleAccess('PlantMaster'),
+//       subItems: [
+//         { 
+//           title: "Plant Master", 
+//           path: "/plantmaster", 
+//           icon: <MdOutlineWarehouse size={16} />,
+//           show: () => hasModuleAccess('PlantMaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         },
+//         { 
+//           title: "User Master", 
+//           path: "/usermaster", 
+//           icon: <FiUsers size={16} />,
+//           show: () => hasModuleAccess('UserMaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         },
+//         { 
+//           title: "User Register", 
+//           path: "/userregister", 
+//           icon: <BsShieldLock size={16} />,
+//           show: () => hasModuleAccess('UserRegister') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         }
+//       ].filter(item => item.show())
+//     },
+//     {
+//       title: "Dispatch",
+//       icon: <FiTruck className="flex-shrink-0" size={18} />,
+//       show: () => hasModuleAccess('Dispatch') || hasModuleAccess('Admin') || hasModuleAccess('Owner'),
+//       subItems: [
+//         { 
+//           title: "Truck Transaction", 
+//           path: "/truck", 
+//           icon: <FiTruck size={16} />,
+//           show: () => hasModuleAccess('Dispatch') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         },
+//         { 
+//           title: "Truck Locator", 
+//           path: "/truckfind", 
+//           icon: <FiClock size={16} />,
+//           show: () => hasModuleAccess('Dispatch') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         }
+//       ].filter(item => item.show())
+//     },
+//     {
+//       title: "Gate Control",
+//       path: "/gate",
+//       icon: <MdOutlineWarehouse className="flex-shrink-0" size={18} />,
+//       show: () => hasModuleAccess('GateKeeper') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//     },
+//     {
+//       title: "Loading",
+//       path: "/loader",
+//       icon: <BsBoxSeam className="flex-shrink-0" size={18} />,
+//       show: () => hasModuleAccess('Loader') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//     },
+//     {
+//       title: "Reports",
+//       icon: <FiPieChart className="flex-shrink-0" size={18} />,
+//       show: () => hasModuleAccess('Report') || hasModuleAccess('Admin') || hasModuleAccess('Owner'),
+//       subItems: [
+//         { 
+//           title: "Operations Report", 
+//           path: "/reports", 
+//           icon: <FiPieChart size={16} />,
+//           show: () => hasModuleAccess('Report') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         },
+//         { 
+//           title: "Schedule Board", 
+//           path: "/truckshedule", 
+//           icon: <MdOutlineSchedule size={16} />,
+//           show: () => hasModuleAccess('Report') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+//         }
+//       ].filter(item => item.show())
+//     }
+//   ].filter(item => item.show());
+
+//   if (location.pathname === '/') return null;
+
+
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
@@ -7305,6 +7450,19 @@ import {
   BsBoxSeam
 } from 'react-icons/bs';
 
+// Role access mapping matching your App.js
+const roleAccess = {
+  owner: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
+  admin: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
+  dispatch: ['truck', 'truckfind'],
+  gatekeeper: ['gate'],
+  plantmaster: ['plantmaster'],
+  usermaster: ['usermaster', 'userregister'],
+  userregister: ['userregister'],
+  report: ['reports', 'truckshedule'],
+  loader: ['loader'],
+};
+
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -7322,20 +7480,23 @@ const Navbar = () => {
     navigate("/");
   };
 
- const hasModuleAccess = (module) => {
-  if (!userRole) return false;
-  const userRoles = userRole.split(',').map(r => r.trim().toLowerCase());
-  return userRoles.includes(module.toLowerCase());
-};
- 
-const canAccessRoute = (requiredRoute) => {
-  const roles = localStorage.getItem('userRole')
-    ?.split(',')
-    .map(r => r.trim().toLowerCase()) || [];
+  const hasModuleAccess = (module) => {
+    if (!userRole) return false;
+    
+    const roles = userRole.split(',').map(r => r.trim().toLowerCase());
+    const moduleKey = module.toLowerCase();
 
-  return roles.some(role => roleAccess[role]?.includes(requiredRoute.toLowerCase()));
-};
+    // Admin and owner have full access
+    if (roles.includes('admin') || roles.includes('owner')) {
+      return true;
+    }
 
+    // Check against roleAccess mapping
+    return roles.some(role => {
+      const accessibleModules = roleAccess[role] || [];
+      return accessibleModules.includes(moduleKey);
+    });
+  };
 
   const menuItems = [
     {
@@ -7347,46 +7508,44 @@ const canAccessRoute = (requiredRoute) => {
     {
       title: "Admin",
       icon: <FiSettings className="flex-shrink-0" size={18} />,
-      show: () => hasModuleAccess('Admin') || hasModuleAccess('Owner') || 
-                hasModuleAccess('UserMaster') || hasModuleAccess('UserRegister') || 
-                hasModuleAccess('PlantMaster'),
+      show: () => hasModuleAccess('plantmaster') || hasModuleAccess('usermaster') || hasModuleAccess('userregister'),
       subItems: [
         { 
           title: "Plant Master", 
           path: "/plantmaster", 
           icon: <MdOutlineWarehouse size={16} />,
-          show: () => hasModuleAccess('PlantMaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('plantmaster')
         },
         { 
           title: "User Master", 
           path: "/usermaster", 
           icon: <FiUsers size={16} />,
-          show: () => hasModuleAccess('usermaster') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('usermaster')
         },
         { 
           title: "User Register", 
           path: "/userregister", 
           icon: <BsShieldLock size={16} />,
-          show: () => hasModuleAccess('UserRegister') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('userregister')
         }
       ].filter(item => item.show())
     },
     {
       title: "Dispatch",
       icon: <FiTruck className="flex-shrink-0" size={18} />,
-      show: () => hasModuleAccess('Dispatch') || hasModuleAccess('Admin') || hasModuleAccess('Owner'),
+      show: () => hasModuleAccess('truck') || hasModuleAccess('truckfind'),
       subItems: [
         { 
           title: "Truck Transaction", 
           path: "/truck", 
           icon: <FiTruck size={16} />,
-          show: () => hasModuleAccess('Dispatch') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('truck')
         },
         { 
           title: "Truck Locator", 
           path: "/truckfind", 
           icon: <FiClock size={16} />,
-          show: () => hasModuleAccess('Dispatch') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('truckfind')
         }
       ].filter(item => item.show())
     },
@@ -7394,30 +7553,30 @@ const canAccessRoute = (requiredRoute) => {
       title: "Gate Control",
       path: "/gate",
       icon: <MdOutlineWarehouse className="flex-shrink-0" size={18} />,
-      show: () => hasModuleAccess('GateKeeper') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+      show: () => hasModuleAccess('gate')
     },
     {
       title: "Loading",
       path: "/loader",
       icon: <BsBoxSeam className="flex-shrink-0" size={18} />,
-      show: () => hasModuleAccess('Loader') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+      show: () => hasModuleAccess('loader')
     },
     {
       title: "Reports",
       icon: <FiPieChart className="flex-shrink-0" size={18} />,
-      show: () => hasModuleAccess('Report') || hasModuleAccess('Admin') || hasModuleAccess('Owner'),
+      show: () => hasModuleAccess('reports') || hasModuleAccess('truckshedule'),
       subItems: [
         { 
           title: "Operations Report", 
           path: "/reports", 
           icon: <FiPieChart size={16} />,
-          show: () => hasModuleAccess('Report') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('reports')
         },
         { 
           title: "Schedule Board", 
           path: "/truckshedule", 
           icon: <MdOutlineSchedule size={16} />,
-          show: () => hasModuleAccess('Report') || hasModuleAccess('Admin') || hasModuleAccess('Owner')
+          show: () => hasModuleAccess('truckshedule')
         }
       ].filter(item => item.show())
     }
@@ -7660,3 +7819,7 @@ const canAccessRoute = (requiredRoute) => {
 };
 
 export default Navbar;
+
+
+
+
