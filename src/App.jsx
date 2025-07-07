@@ -559,32 +559,187 @@
 
 
 
-import React from 'react';
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+// import Home from './Home';
+// import StaffPage from './StaffPage';
+// import Login from './Login';
+// import Navbar from './Navbar';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import GateKeeper from './GateKeeper';
+// import TruckTransaction from './TruckTransaction';
+// import PlantMaster from './PlantMaster';
+// import Reports from './Report';
+// import UserMaster from './UserMaster';
+// import TruckFind from './TruckFind.jsx';
+// import UserRegister from './UserRegister.jsx';
+// import TruckSchedule from "./TruckSchedule.jsx";
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// // Role-based access control with exact role names as stored in localStorage
+// const roleAccess = {
+//   Owner: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
+//   Admin: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
+//   Dispatch: ['truck', 'truckfind'],
+//   GateKeeper: ['gate'],
+//   PlantMaster: ['plantmaster'],
+//   UserMaster: ['usermaster'], // UserMaster has access to both
+//   UserRegister: ['userregister'],
+//   Report: ['reports', 'truckshedule'],
+//   Loader: ['loader'],
+// };
+
+// // Authentication check
+// const isAuthenticated = () => {
+//   const username = localStorage.getItem('username');
+//   const userRole = localStorage.getItem('userRole');
+//   return username && userRole;
+// };
+
+// // Enhanced Authorization check with debugging
+// const canAccessRoute = (requiredRoute) => {
+//   if (!requiredRoute) return true; // Allow routes without required permissions
+  
+//   const roles = localStorage.getItem('userRole')
+//     ?.split(',')
+//     .map(r => r.trim()) || []; // Keep original case
+
+//   console.log('[Debug] Checking access for:', requiredRoute);
+//   console.log('[Debug] User roles:', roles);
+
+//   // Admin and Owner have full access
+//   if (roles.includes('Admin') || roles.includes('Owner')) {
+//     return true;
+//   }
+
+//   // Check each role's permissions
+//   return roles.some(role => {
+//     const permissions = roleAccess[role] || [];
+//     const hasAccess = permissions.includes(requiredRoute);
+    
+//     console.log(`[Debug] Checking role ${role} for ${requiredRoute}:`, hasAccess);
+//     return hasAccess;
+//   });
+// };
+
+// // ProtectedRoute with detailed debugging
+// function ProtectedRoute({ element: Component, requiredRoute }) {
+//   const location = useLocation();
+  
+//   console.group('Route Access Check');
+//   console.log('Current path:', location.pathname);
+//   console.log('Required permission:', requiredRoute);
+//   console.log('User roles:', localStorage.getItem('userRole'));
+  
+//   if (!isAuthenticated()) {
+//     console.log('Result: Not authenticated - redirecting to login');
+//     console.groupEnd();
+//     return <Navigate to="/" replace state={{ from: location }} />;
+//   }
+
+//   if (requiredRoute && !canAccessRoute(requiredRoute)) {
+//     console.log('Result: Access denied - redirecting to home');
+//     console.groupEnd();
+//     return <Navigate to="/home" replace state={{ from: location }} />;
+//   }
+
+//   console.log('Result: Access granted');
+//   console.groupEnd();
+//   return <Component />;
+// }
+
+// function Layout() {
+//   const location = useLocation();
+//   const hideNavbar = location.pathname === '/';
+
+//   return (
+//     <>
+//       {!hideNavbar && <Navbar />}
+//       <Routes>
+//         <Route path="/" element={<Login />} />
+
+//         {/* Routes requiring authentication */}
+//         <Route path="/home" element={<ProtectedRoute element={Home} />} />
+//         <Route path="/staff" element={<ProtectedRoute element={StaffPage} requiredRoute="staff" />} />
+//         <Route path="/gate" element={<ProtectedRoute element={GateKeeper} requiredRoute="gate" />} />
+//         <Route path="/truck" element={<ProtectedRoute element={TruckTransaction} requiredRoute="truck" />} />
+//         <Route path="/truckfind" element={<ProtectedRoute element={TruckFind} requiredRoute="truckfind" />} />
+//         <Route path="/plantmaster" element={<ProtectedRoute element={PlantMaster} requiredRoute="plantmaster" />} />
+//         <Route path="/reports" element={<ProtectedRoute element={Reports} requiredRoute="reports" />} />
+//         <Route path="/usermaster" element={<ProtectedRoute element={UserMaster} requiredRoute="usermaster" />} />
+//         <Route path="/userregister" element={<ProtectedRoute element={UserRegister} requiredRoute="userregister" />} />
+//         <Route path="/truckshedule" element={<ProtectedRoute element={TruckSchedule} requiredRoute="truckshedule" />} />
+
+//         {/* Wildcard redirects */}
+//         <Route path="*" element={
+//           isAuthenticated() ? <Navigate to="/home" replace /> : <Navigate to="/" replace />
+//         } />
+//       </Routes>
+//     </>
+//   );
+// }
+
+// export default function App() {
+//   return (
+//     <Router>
+//       <ToastContainer position="top-right" autoClose={5000} />
+//       <Layout />
+//     </Router>
+//   );
+// }
+
+
+
+
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Import your components
 import Home from './Home';
 import StaffPage from './StaffPage';
 import Login from './Login';
 import Navbar from './Navbar';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import GateKeeper from './GateKeeper';
 import TruckTransaction from './TruckTransaction';
 import PlantMaster from './PlantMaster';
 import Reports from './Report';
 import UserMaster from './UserMaster';
-import TruckFind from './TruckFind.jsx';
-import UserRegister from './UserRegister.jsx';
-import TruckSchedule from "./TruckSchedule.jsx";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import TruckFind from './TruckFind';
+import UserRegister from './UserRegister';
+import TruckSchedule from './TruckSchedule';
 
-// Role-based access control with exact role names as stored in localStorage
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("ErrorBoundary caught:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div className="error-fallback">Something went wrong. Please refresh the page.</div>;
+    }
+    return this.props.children;
+  }
+}
+
+// Role-based access control
 const roleAccess = {
   Owner: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
   Admin: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
   Dispatch: ['truck', 'truckfind'],
   GateKeeper: ['gate'],
   PlantMaster: ['plantmaster'],
-  UserMaster: ['usermaster'], // UserMaster has access to both
+  UserMaster: ['usermaster', 'userregister'],
   UserRegister: ['userregister'],
   Report: ['reports', 'truckshedule'],
   Loader: ['loader'],
@@ -594,19 +749,19 @@ const roleAccess = {
 const isAuthenticated = () => {
   const username = localStorage.getItem('username');
   const userRole = localStorage.getItem('userRole');
-  return username && userRole;
+  return !!username && !!userRole;
 };
 
-// Enhanced Authorization check with debugging
+// Enhanced Authorization check
 const canAccessRoute = (requiredRoute) => {
-  if (!requiredRoute) return true; // Allow routes without required permissions
+  if (!requiredRoute) return true;
   
   const roles = localStorage.getItem('userRole')
     ?.split(',')
-    .map(r => r.trim()) || []; // Keep original case
+    .map(r => r.trim()) || [];
 
-  console.log('[Debug] Checking access for:', requiredRoute);
-  console.log('[Debug] User roles:', roles);
+  // Skip check for home route
+  if (requiredRoute === 'home') return true;
 
   // Admin and Owner have full access
   if (roles.includes('Admin') || roles.includes('Owner')) {
@@ -616,40 +771,35 @@ const canAccessRoute = (requiredRoute) => {
   // Check each role's permissions
   return roles.some(role => {
     const permissions = roleAccess[role] || [];
-    const hasAccess = permissions.includes(requiredRoute);
-    
-    console.log(`[Debug] Checking role ${role} for ${requiredRoute}:`, hasAccess);
-    return hasAccess;
+    return permissions.includes(requiredRoute);
   });
 };
 
-// ProtectedRoute with detailed debugging
-function ProtectedRoute({ element: Component, requiredRoute }) {
+// ProtectedRoute with mounting handling
+const ProtectedRoute = ({ element: Component, requiredRoute }) => {
   const location = useLocation();
-  
-  console.group('Route Access Check');
-  console.log('Current path:', location.pathname);
-  console.log('Required permission:', requiredRoute);
-  console.log('User roles:', localStorage.getItem('userRole'));
-  
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!mounted) return null;
+
   if (!isAuthenticated()) {
-    console.log('Result: Not authenticated - redirecting to login');
-    console.groupEnd();
     return <Navigate to="/" replace state={{ from: location }} />;
   }
 
   if (requiredRoute && !canAccessRoute(requiredRoute)) {
-    console.log('Result: Access denied - redirecting to home');
-    console.groupEnd();
     return <Navigate to="/home" replace state={{ from: location }} />;
   }
 
-  console.log('Result: Access granted');
-  console.groupEnd();
   return <Component />;
-}
+};
 
-function Layout() {
+// Layout component
+const Layout = () => {
   const location = useLocation();
   const hideNavbar = location.pathname === '/';
 
@@ -658,8 +808,6 @@ function Layout() {
       {!hideNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Login />} />
-
-        {/* Routes requiring authentication */}
         <Route path="/home" element={<ProtectedRoute element={Home} />} />
         <Route path="/staff" element={<ProtectedRoute element={StaffPage} requiredRoute="staff" />} />
         <Route path="/gate" element={<ProtectedRoute element={GateKeeper} requiredRoute="gate" />} />
@@ -670,21 +818,33 @@ function Layout() {
         <Route path="/usermaster" element={<ProtectedRoute element={UserMaster} requiredRoute="usermaster" />} />
         <Route path="/userregister" element={<ProtectedRoute element={UserRegister} requiredRoute="userregister" />} />
         <Route path="/truckshedule" element={<ProtectedRoute element={TruckSchedule} requiredRoute="truckshedule" />} />
-
-        {/* Wildcard redirects */}
         <Route path="*" element={
           isAuthenticated() ? <Navigate to="/home" replace /> : <Navigate to="/" replace />
         } />
       </Routes>
     </>
   );
-}
+};
 
+// Main App component
 export default function App() {
   return (
     <Router>
-      <ToastContainer position="top-right" autoClose={5000} />
-      <Layout />
+      <ErrorBoundary>
+        <Layout />
+        <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </ErrorBoundary>
     </Router>
   );
 }
