@@ -6457,8 +6457,6 @@
 
 
 
-
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -6503,50 +6501,51 @@ const Navbar = () => {
     return requiredRoles.some(role => userRoles.includes(role));
   };
 
-  const filterSubItems = (subItems) => {
-    return subItems.filter(subItem => {
-      if (subItem.path === '/plantmaster') {
-        return hasAccess(['Owner', 'Admin', 'UserMaster']);
-      }
-      if (subItem.path === '/usermaster') {
-        return hasAccess(['Owner', 'Admin', 'UserMaster']);
-      }
-      if (subItem.path === '/userregister') {
-        return hasAccess(['Owner', 'Admin', 'UserRegister']);
-      }
-      if (subItem.path === '/truck') {
-        return hasAccess(['Owner', 'Admin', 'Dispatch']);
-      }
-      if (subItem.path === '/truckfind') {
-        return hasAccess(['Owner', 'Admin', 'Dispatch']);
-      }
-      if (subItem.path === '/gate') {
-        return hasAccess(['Owner', 'Admin', 'GateKeeper']);
-      }
-      if (subItem.path === '/loader') {
-        return hasAccess(['Owner', 'Admin', 'Loader']);
-      }
-      if (subItem.path === '/reports') {
-        return hasAccess(['Owner', 'Admin', 'Report']);
-      }
-      if (subItem.path === '/truckshedule') {
-        return hasAccess(['Owner', 'Admin', 'Report']);
-      }
-      return true;
-    });
-  };
+  //   const roleAccess = {
+//     Owner: ['plantmaster', 'usermaster', 'userregister', 'truck', 'gate', 'loader', 'reports', 'truckfind', 'truckshedule'],
+//     Admin: ['plantmaster', 'usermaster', 'userregister', 'truck', 'gate', 'loader', 'reports', 'truckfind', 'truckshedule'],
+//     Dispatch: ['truck', 'truckfind'],
+//     Report: ['reports', 'truckshedule'],
+//     GateKeeper: ['gate'],
+//     UserMaster: ['usermaster'],
+//     UserRegister: ['userregister'],
+//     Loader: ['loader'],
+//   };
+
+//   const canAccess = (route) => {
+//     if (!userRole) return false;
+//     const roles = userRole.split(',').map(r => r.trim());
+//     return roles.some(role => roleAccess[role]?.includes(route));
+//   };
+
+//   const NavLink = ({ to, children, mobile = false, className = '' }) => (
+//     <Link 
+//       to={to} 
+//       className={`no-underline transition-all ${mobile ? 'w-full' : ''} ${className}`}
+//       onClick={() => setMobileMenuOpen(false)}
+//     >
+//       {children}
+//     </Link>
+//   );
+
+//   if (location.pathname === '/') return null;
+
+//   const toggleDropdown = (dropdown) => {
+//     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+//   };
+
 
   const menuItems = [
     {
       title: "Dashboard",
       path: "/dashboard",
       icon: <FiHome className="flex-shrink-0" size={18} />,
-      roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report", "UserMaster", "UserRegister"]
+      roles: ["Owner", "Admin", "Dispatch", "GateKeeper", "Loader", "Report"]
     },
     {
       title: "Admin",
       icon: <FiSettings className="flex-shrink-0" size={18} />,
-      roles: ["Owner", "Admin", "UserMaster", "UserRegister"],
+      roles: ["Owner", "Admin",   "UserMaster", "UserRegister"],
       subItems: [
         { title: "Plant Master", path: "/plantmaster", icon: <MdOutlineWarehouse size={16} /> },
         { title: "User Management", path: "/usermaster", icon: <FiUsers size={16} /> },
@@ -6585,121 +6584,96 @@ const Navbar = () => {
     }
   ];
 
-  const filteredMenuItems = menuItems
-    .filter(item => hasAccess(item.roles))
-    .map(item => {
-      if (item.subItems) {
-        return {
-          ...item,
-          subItems: filterSubItems(item.subItems)
-        };
-      }
-      return item;
-    })
-    .filter(item => !item.subItems || item.subItems.length > 0);
-
-  const closeAllDropdowns = () => {
-    setActiveDropdown(null);
-    setMobileMenuOpen(false);
-  };
+  const filteredMenuItems = menuItems.filter(item => hasAccess(item.roles));
 
   if (location.pathname === '/') return null;
 
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:block bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link 
-                to="/dashboard" 
-                className="flex-shrink-0 flex items-center"
-                onClick={closeAllDropdowns}
-              >
-                <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow">
-                  <FiTruck className="h-5 w-5" />
-                </div>
-                <span className="ml-3 text-xl font-semibold text-gray-800">Lemon Logistics</span>
-              </Link>
-              
-              <div className="hidden lg:ml-6 lg:flex lg:space-x-1">
+      <nav className="hidden md:block bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-between h-16 items-center">
+            <Link to="/dashboard" className="flex items-center min-w-max">
+              <div className="h-9 w-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow-sm">
+                <FiTruck className="h-5 w-5" />
+              </div>
+              <span className="ml-3 text-xl font-semibold text-gray-800">Lemon Logistics</span>
+            </Link>
+
+            <div className="flex items-center space-x-4">
+              <div className="flex space-x-1">
                 {filteredMenuItems.map((item, index) => (
-                  <div key={index} className="relative">
+                  <div key={index} className="relative h-full">
                     {item.path ? (
                       <Link
                         to={item.path}
-                        onClick={closeAllDropdowns}
-                        className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          location.pathname === item.path
-                            ? 'bg-blue-50 text-blue-700 font-medium'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                        className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                          location.pathname === item.path 
+                            ? 'text-blue-700 bg-blue-50 font-medium' 
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                         }`}
+                        style={{ textDecoration: 'none' }}
                       >
                         <span className="mr-2">{item.icon}</span>
                         {item.title}
                       </Link>
                     ) : (
-                      <div 
-                        className="relative group"
-                        onMouseEnter={() => {
-                          setActiveDropdown(index);
-                        }}
-                        onMouseLeave={() => {
-                          setActiveDropdown(null);
-                        }}
-                      >
+                      <div className="h-full">
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setActiveDropdown(activeDropdown === index ? null : index);
                           }}
-                          className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                             activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
-                              ? 'bg-blue-50 text-blue-700 font-medium'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                              ? 'text-blue-700 bg-blue-50 font-medium' 
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                           }`}
+                          style={{ textDecoration: 'none' }}
                         >
                           <span className="mr-2">{item.icon}</span>
                           {item.title}
                           <FiChevronDown 
-                            className={`ml-1 h-4 w-4 transition-transform ${
+                            className={`ml-1 h-4 w-4 transition-transform duration-200 ${
                               activeDropdown === index ? 'rotate-180' : ''
                             }`} 
                           />
                         </button>
 
-                        <div 
-                          className={`absolute left-0 mt-1 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50 transition-all duration-200 ${
-                            activeDropdown === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1 pointer-events-none'
-                          }`}
-                        >
-                          {item.subItems.map((subItem, subIndex) => (
-                            <Link
-                              key={subIndex}
-                              to={subItem.path}
-                              onClick={closeAllDropdowns}
-                              className={`flex items-center px-4 py-2.5 text-sm transition-colors ${
-                                location.pathname === subItem.path
-                                  ? 'bg-blue-50 text-blue-700 font-medium'
-                                  : 'text-gray-700 hover:bg-gray-50'
-                              }`}
-                            >
-                              <span className="mr-3 text-gray-500">{subItem.icon}</span>
-                              {subItem.title}
-                            </Link>
-                          ))}
-                        </div>
+                        {activeDropdown === index && (
+                          <div 
+                            className="absolute right-0 mt-1 w-56 bg-white rounded-lg shadow-lg ring-1 ring-gray-200 py-1 z-50"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {item.subItems.map((subItem, subIndex) => (
+                              <Link
+                                key={subIndex}
+                                to={subItem.path}
+                                onClick={() => setActiveDropdown(null)}
+                                className={`flex items-center px-4 py-2.5 text-sm transition-colors ${
+                                  location.pathname === subItem.path
+                                    ? 'bg-blue-50 text-blue-700 font-medium'
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                                style={{ textDecoration: 'none' }}
+                              >
+                                <span className="mr-3 text-gray-500">{subItem.icon}</span>
+                                {subItem.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
                 ))}
               </div>
-            </div>
 
-            <div className="flex items-center">
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors"
+                className="flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors min-w-max"
+                style={{ textDecoration: 'none' }}
               >
                 <FiLogOut className="mr-2" />
                 Logout
@@ -6709,24 +6683,20 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation */}
-      <nav className="lg:hidden bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+      {/* Mobile Navigation - Fixed Version */}
+      <nav className="md:hidden bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
         <div className="px-4">
           <div className="flex justify-between h-16 items-center">
-            <Link 
-              to="/dashboard" 
-              className="flex items-center"
-              onClick={closeAllDropdowns}
-            >
-              <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow">
+            <Link to="/dashboard" className="flex items-center">
+              <div className="h-9 w-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow-sm">
                 <FiTruck className="h-5 w-5" />
               </div>
-              <span className="ml-3 text-lg font-semibold text-gray-800">Lemon Logistics</span>
+              <span className="text-xl font-semibold text-gray-800 tracking-tight">Lemon ERP</span>
             </Link>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="text-gray-500 hover:text-gray-700 focus:outline-none p-2 rounded-full hover:bg-gray-100 transition-colors"
             >
               {mobileMenuOpen ? (
                 <FiX className="h-6 w-6" />
@@ -6738,36 +6708,38 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Sidebar */}
-        <div 
-          className={`fixed inset-0 z-40 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}
-        >
+        <div className={`fixed inset-0 z-40 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
           <div 
             className="fixed inset-0 bg-black bg-opacity-50" 
-            onClick={closeAllDropdowns}
-          />
-          <div className="relative flex flex-col w-80 max-w-xs h-full bg-white shadow-xl">
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+          <div className="relative flex flex-col w-80 max-w-sm h-full bg-white shadow-xl">
+
+            {/* Sidebar Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
               <div className="text-xl font-semibold text-gray-800">Menu</div>
               <button
-                onClick={closeAllDropdowns}
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
               >
                 <FiX className="h-6 w-6" />
               </button>
             </div>
 
+            {/* Menu Items */}
             <div className="flex-1 overflow-y-auto py-4">
               {filteredMenuItems.map((item, index) => (
                 <div key={index} className="px-2">
                   {item.path ? (
                     <Link
                       to={item.path}
-                      onClick={closeAllDropdowns}
+                      onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center px-4 py-3 rounded-lg mx-2 text-base font-medium ${
-                        location.pathname === item.path
-                          ? 'bg-blue-50 text-blue-700'
+                        location.pathname === item.path 
+                          ? 'bg-blue-50 text-blue-700' 
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
+                      style={{ textDecoration: 'none' }}
                     >
                       <span className="mr-3">{item.icon}</span>
                       {item.title}
@@ -6775,14 +6747,16 @@ const Navbar = () => {
                   ) : (
                     <div>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setActiveDropdown(activeDropdown === index ? null : index);
                         }}
                         className={`flex items-center justify-between w-full px-4 py-3 rounded-lg mx-2 text-base font-medium ${
-                          activeDropdown === index || item.subItems?.some(subItem => location.pathname === subItem.path)
-                            ? 'bg-blue-50 text-blue-700'
+                          activeDropdown === index 
+                            ? 'bg-blue-50 text-blue-700' 
                             : 'text-gray-700 hover:bg-gray-100'
                         }`}
+                        style={{ textDecoration: 'none' }}
                       >
                         <div className="flex items-center">
                           <span className="mr-3">{item.icon}</span>
@@ -6804,12 +6778,16 @@ const Navbar = () => {
                           <Link
                             key={subIndex}
                             to={subItem.path}
-                            onClick={closeAllDropdowns}
+                            onClick={() => {
+                              setMobileMenuOpen(false);
+                              setActiveDropdown(null);
+                            }}
                             className={`flex items-center pl-12 pr-4 py-2.5 text-base ${
-                              location.pathname === subItem.path
-                                ? 'bg-blue-100 text-blue-700 font-medium'
+                              location.pathname === subItem.path 
+                                ? 'bg-blue-100 text-blue-700 font-medium' 
                                 : 'text-gray-600 hover:bg-gray-50'
                             }`}
+                            style={{ textDecoration: 'none' }}
                           >
                             <span className="mr-3">{subItem.icon}</span>
                             {subItem.title}
@@ -6822,10 +6800,12 @@ const Navbar = () => {
               ))}
             </div>
 
+            {/* Logout Button */}
             <div className="px-4 py-4 border-t border-gray-200">
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center w-full px-4 py-3 rounded-lg bg-gray-50 text-red-600 hover:bg-red-50 font-medium"
+                style={{ textDecoration: 'none' }}
               >
                 <FiLogOut className="mr-3" />
                 Logout
