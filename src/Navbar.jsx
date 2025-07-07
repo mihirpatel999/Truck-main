@@ -7457,7 +7457,7 @@ const roleAccess = {
   dispatch: ['truck', 'truckfind'],
   gatekeeper: ['gate'],
   plantmaster: ['plantmaster'],
-  usermaster: ['usermaster', 'userregister'],
+  usermaster: ['usermaster'],
   userregister: ['userregister'],
   report: ['reports', 'truckshedule'],
   loader: ['loader'],
