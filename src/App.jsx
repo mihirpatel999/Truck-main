@@ -321,7 +321,6 @@
 
 
 
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Home from './Home';
@@ -338,43 +337,58 @@ import TruckFind from './TruckFind.jsx';
 import UserRegister from './UserRegister.jsx';
 import TruckSchedule from "./TruckSchedule.jsx";
 
-// ✅ Role-based access control mapping
+// Enhanced Role-based access control
 const roleAccess = {
-  owner: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff','userregister','truckshedule'],
-  admin: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff','userregister','truckshedule'],
+  owner: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
+  admin: ['plantmaster', 'usermaster', 'truck', 'gate', 'loader', 'reports', 'staff', 'userregister', 'truckshedule'],
   dispatch: ['truck', 'truckfind'],
   gatekeeper: ['gate'],
+  plantmaster: ['plantmaster'],  // Added specific role for PlantMaster
   usermaster: ['usermaster'],
   userregister: ['userregister'],
-  report: ['reports','truckshedule'],
-  plantmaster:['plantmaster'],
+  report: ['reports', 'truckshedule'],
   loader: ['loader'],
 };
 
-// ✅ Authentication check
+// Authentication check
 const isAuthenticated = () => {
   const username = localStorage.getItem('username');
   const userRole = localStorage.getItem('userRole');
   return username && userRole;
 };
 
-// ✅ Authorization check (FIXED: added `.toLowerCase()` to requiredRoute)
+// Enhanced Authorization check
 const canAccessRoute = (requiredRoute) => {
   const roles = localStorage.getItem('userRole')
     ?.split(',')
     .map(r => r.trim().toLowerCase()) || [];
 
-  return roles.some(role => roleAccess[role]?.includes(requiredRoute.toLowerCase()));
+  // Check if any role has access to the required route
+  const hasAccess = roles.some(role => {
+    // Check if the role exists in roleAccess and has the required route
+    if (roleAccess[role]) {
+      return roleAccess[role].includes(requiredRoute);
+    }
+    return false;
+  });
+
+  // Special case: Admin and Owner have access to everything
+  if (roles.includes('admin') || roles.includes('owner')) {
+    return true;
+  }
+
+  return hasAccess;
 };
 
-// ✅ Protected route wrapper
+// Reusable protected route
 function ProtectedRoute({ element: Component, requiredRoute }) {
   if (!isAuthenticated()) return <Navigate to="/" replace />;
-  if (requiredRoute && !canAccessRoute(requiredRoute)) return <Navigate to="/home" replace />;
+  if (requiredRoute && !canAccessRoute(requiredRoute)) {
+    return <Navigate to="/home" replace />;
+  }
   return <Component />;
 }
 
-// ✅ Layout with navbar handling
 function Layout() {
   const location = useLocation();
   const hideNavbar = location.pathname === '/';
@@ -385,19 +399,22 @@ function Layout() {
       <Routes>
         <Route path="/" element={<Login />} />
 
-        {/* Routes requiring authentication & authorization */}
+        {/* Routes requiring authentication */}
         <Route path="/home" element={<ProtectedRoute element={Home} />} />
         <Route path="/staff" element={<ProtectedRoute element={StaffPage} requiredRoute="staff" />} />
         <Route path="/gate" element={<ProtectedRoute element={GateKeeper} requiredRoute="gate" />} />
         <Route path="/truck" element={<ProtectedRoute element={TruckTransaction} requiredRoute="truck" />} />
         <Route path="/truckfind" element={<ProtectedRoute element={TruckFind} requiredRoute="truck" />} />
-        <Route path="/plantmaster" element={<ProtectedRoute element={PlantMaster} requiredRoute="plantmaster" />} />
+        <Route 
+          path="/plantmaster" 
+          element={<ProtectedRoute element={PlantMaster} requiredRoute="plantmaster" />} 
+        />
         <Route path="/reports" element={<ProtectedRoute element={Reports} requiredRoute="reports" />} />
         <Route path="/usermaster" element={<ProtectedRoute element={UserMaster} requiredRoute="usermaster" />} />
         <Route path="/userregister" element={<ProtectedRoute element={UserRegister} requiredRoute="userregister" />} />
         <Route path="/truckshedule" element={<ProtectedRoute element={TruckSchedule} requiredRoute="truckshedule" />} />
 
-        {/* Fallback redirect */}
+        {/* Wildcard: authenticated users go to home; unauthenticated go to login */}
         <Route
           path="*"
           element={
@@ -409,7 +426,6 @@ function Layout() {
   );
 }
 
-// ✅ App entry point
 export default function App() {
   return (
     <Router>
