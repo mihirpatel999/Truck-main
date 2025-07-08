@@ -2370,7 +2370,7 @@ export default function PlantMaster({ onClose }) {
     if (onClose) {
       onClose();
     } else {
-      navigate('/'); // Navigate to home if no onClose prop provided
+      navigate('/home'); // Navigate to home if no onClose prop provided
     }
   };
 
