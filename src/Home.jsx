@@ -3185,8 +3185,10 @@ export default function Home() {
   const allowedPanels = panelList.filter((panel) => {
     if (!userRole) return false;
     const userRoles = userRole.split(",").map((r) => r.trim().toLowerCase());
-    return userRoles.some((role) =>
-      panel.roles.map((r) => r.toLowerCase()).includes(role)
+    return (
+      userRoles.some((role) =>
+       panel.roles.map((r) => r.toLowerCase()).includes(role)
+     ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind","/plantmaster"].includes(panel.path)
     );
   });
 
@@ -3197,7 +3199,7 @@ export default function Home() {
     return (
       userRoles.some((role) =>
         panel.roles.map((r) => r.toLowerCase()).includes(role)
-      ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind"].includes(panel.path)
+      ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind","/plantmaster"].includes(panel.path)
     );
   });
 
