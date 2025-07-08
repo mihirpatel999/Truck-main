@@ -2129,7 +2129,7 @@ export default function UserRegister() {
             </span>
           </h1>
           
-            <div className="flex flex-col items-end space-y-2">
+           
     
     {/* Close Button on Top Right */}
     <button
@@ -2248,7 +2248,7 @@ export default function UserRegister() {
             </table>
           </div>
         </div>
-         </div>
+     
 
 
         {/* Mobile Cards */}
