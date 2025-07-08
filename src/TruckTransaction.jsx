@@ -1565,6 +1565,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function TruckTransaction() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     transactionId: null, truckNo: '', transactionDate: '', cityName: '',
     transporter: '', amountPerTon: '', truckWeight: '', deliverPoint: '', remarks: ''
