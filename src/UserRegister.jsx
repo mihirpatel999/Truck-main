@@ -2131,16 +2131,6 @@ export default function UserRegister() {
           
            
     
-    {/* Close Button on Top Right */}
-    <button
-      onClick={() => navigate("/home")}
-      className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
-      title="Close"
-    >
-      <FiX className="h-5 w-5" />
-    </button>
-
-
 
           {/* Modern Search Bar */}
           <div className="relative w-full md:w-64 lg:w-80">
@@ -2164,6 +2154,14 @@ export default function UserRegister() {
             )}
           </div>
         </div>
+
+        <button 
+      onClick={() => navigate('/home')}
+      className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+      title="Close"
+    >
+      <FiX className="h-5 w-5" />
+    </button>
 
         {/* Loading State */}
         {isLoading && (
