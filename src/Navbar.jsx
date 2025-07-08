@@ -7613,7 +7613,7 @@ const Navbar = () => {
               <div className="h-9 w-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center text-white shadow-sm">
                 <FiTruck className="h-5 w-5" />
               </div>
-              <span className="ml-3 text-xl font-semibold text-gray-800">Lemon Logistics</span>
+              <span className="ml-3 text-xl font-semibold text-gray-800">Lemon Software</span>
             </Link>
 
             <div className="flex items-center space-x-4">
