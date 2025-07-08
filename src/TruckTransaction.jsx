@@ -1559,6 +1559,7 @@ import { useLocation } from 'react-router-dom';
 import { FiEdit2, FiTrash2, FiPlus, FiSave, FiTruck, FiX } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -1806,13 +1807,9 @@ export default function TruckTransaction() {
     }
   };
 
- 
   const handleClose = () => {
-    if (onClose) {
-      onClose();
-    } else {
-      navigate('/home'); // Navigate to home if no onClose prop provided
-    }
+     navigate('/home'); 
+    toast.info('Transaction form closed');
   };
 
   const selectedPlants = tableData.map((r, idx) => idx === editingIndex ? null : r.plantName);
