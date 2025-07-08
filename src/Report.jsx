@@ -1340,7 +1340,7 @@ export default function Report() {
               </h1>
               <p className="text-blue-100 text-lg">Comprehensive fleet tracking and reporting</p>
             </div>
-           <CancelButton />
+        
 
             <div className="mt-6 md:mt-0">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
@@ -1350,7 +1350,7 @@ export default function Report() {
             </div>
           </div>
         </div>
-
+                 <CancelButton />
         {/* Filters Section */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
