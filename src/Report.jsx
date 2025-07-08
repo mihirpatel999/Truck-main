@@ -1213,7 +1213,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import truckImage from './assets/Truck.png.png';
+import CancelButton from './CancelButton';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -1335,11 +1335,13 @@ export default function Report() {
           <div className="p-6 md:p-8 flex flex-col md:flex-row items-center">
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
-                <img src={truckImage} alt="Truck" className="h-16 md:h-20 inline-block mr-3" />
+                
                 Truck Movement Analytics
               </h1>
               <p className="text-blue-100 text-lg">Comprehensive fleet tracking and reporting</p>
             </div>
+           <CancelButton />
+
             <div className="mt-6 md:mt-0">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
                 <div className="text-sm font-medium mb-1">Records Found</div>
