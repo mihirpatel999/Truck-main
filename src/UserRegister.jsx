@@ -2006,6 +2006,8 @@ export default function UserRegister() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchAll();
   }, []);
@@ -2114,6 +2116,15 @@ export default function UserRegister() {
       <div className="max-w-7xl mx-auto">
         {/* Header with Search */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+
+          <button 
+           onClick={() => navigate('/home')}
+         className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+          title="Close"
+          >
+          <FiX className="h-5 w-5" />
+           </button>
+
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               User Register
