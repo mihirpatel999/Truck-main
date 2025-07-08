@@ -3056,6 +3056,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const userRole = localStorage.getItem("userRole");
   const userName = localStorage.getItem("userName") || "User";
+  const loggedInUsername = localStorage.getItem('username');
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -3223,7 +3224,7 @@ export default function Home() {
           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1">
-                Welcome back, <span className="text-blue-600">{userName}</span>
+                Welcome back, <span className="text-blue-600">{loggedInUsername}</span>
               </h1>
               <p className="text-gray-500">
                 {formatDate(currentTime)} • {formatTime(currentTime)}
@@ -3232,7 +3233,7 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center border border-gray-200">
                 <span className="text-blue-600 font-medium">
-                  {userName.charAt(0).toUpperCase()}
+                  {loggedInUsername.charAt(0).toUpperCase()}
                 </span>
               </div>
             </div>
@@ -3297,7 +3298,7 @@ export default function Home() {
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-xl font-semibold text-gray-800">
-              Hello, {userName}
+              Hello, {loggedInUsername}
             </h1>
             <p className="text-xs text-gray-500 mt-1">
               {currentTime.toLocaleDateString("en-US", {
