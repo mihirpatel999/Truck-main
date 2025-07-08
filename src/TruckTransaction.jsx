@@ -1806,9 +1806,13 @@ export default function TruckTransaction() {
     }
   };
 
+ 
   const handleClose = () => {
-     navigate('/home'); 
-    toast.info('Transaction form closed');
+    if (onClose) {
+      onClose();
+    } else {
+      navigate('/home'); // Navigate to home if no onClose prop provided
+    }
   };
 
   const selectedPlants = tableData.map((r, idx) => idx === editingIndex ? null : r.plantName);
