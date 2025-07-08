@@ -1807,7 +1807,7 @@ export default function TruckTransaction() {
   };
 
   const handleClose = () => {
-    // Add your close logic here
+     navigate('/home'); 
     toast.info('Transaction form closed');
   };
 
