@@ -7569,7 +7569,7 @@ const Navbar = () => {
       ].filter(item => item.show())
     },
     {
-      title: "Gate Control",
+      title: "Gate Keeper",
       path: "/gate",
       icon: <MdOutlineWarehouse className="flex-shrink-0" size={18} />,
       show: () => hasModuleAccess('gate')
@@ -7586,13 +7586,13 @@ const Navbar = () => {
       show: () => hasModuleAccess('reports') || hasModuleAccess('truckshedule'),
       subItems: [
         { 
-          title: "Operations Report", 
+          title: "General Report", 
           path: "/reports", 
           icon: <FiPieChart size={16} />,
           show: () => hasModuleAccess('reports')
         },
         { 
-          title: "Schedule Board", 
+          title: "Truck Schedule", 
           path: "/truckshedule", 
           icon: <MdOutlineSchedule size={16} />,
           show: () => hasModuleAccess('truckshedule')
