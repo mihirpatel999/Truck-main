@@ -1993,11 +1993,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { FiEdit2, FiTrash2, FiX, FiSave, FiUser, FiLock, FiCheck, FiSearch } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ALL_ROLES = ['Admin', 'GateKeeper', 'Report', 'Dispatch', 'Loader', 'UserMaster', 'UserRegister'];
 
 export default function UserRegister() {
+  
+  const navigate = useNavigate();
+
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [plants, setPlants] = useState([]);
@@ -2006,7 +2011,6 @@ export default function UserRegister() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAll();
@@ -2117,14 +2121,15 @@ export default function UserRegister() {
         {/* Header with Search */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
 
-          <button 
-           onClick={() => navigate('/home')}
-         className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
-          title="Close"
+          <div className="flex items-center gap-4">
+          <button
+            onClick={() => navigate("/home")}
+            className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+            title="Close"
           >
-          <FiX className="h-5 w-5" />
-           </button>
-
+            <FiX className="h-5 w-5" />
+          </button>
+         
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               User Register
