@@ -2119,14 +2119,6 @@ export default function UserRegister() {
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         
-          <div className="flex items-center gap-4"></div>
-          <button
-            onClick={() => navigate("/home")}
-            className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
-            title="Close"
-          >
-            <FiX className="h-5 w-5" />
-          </button>
          
         {/* Header with Search */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -2137,6 +2129,19 @@ export default function UserRegister() {
             </span>
           </h1>
           
+            <div className="flex flex-col items-end space-y-2">
+    
+    {/* Close Button on Top Right */}
+    <button
+      onClick={() => navigate("/home")}
+      className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+      title="Close"
+    >
+      <FiX className="h-5 w-5" />
+    </button>
+
+
+
           {/* Modern Search Bar */}
           <div className="relative w-full md:w-64 lg:w-80">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -2243,6 +2248,8 @@ export default function UserRegister() {
             </table>
           </div>
         </div>
+         </div>
+
 
         {/* Mobile Cards */}
         <div className="lg:hidden space-y-4">
