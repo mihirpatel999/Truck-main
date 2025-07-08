@@ -3091,7 +3091,7 @@ export default function Home() {
       name: "Plant Master",
       path: "/plantmaster",
       icon: <MdOutlineWarehouse size={24} />,
-      roles: ["Owner", "Admin"],
+      roles: ["Owner", "Admin","Plantmaster"],
       color: "bg-indigo-100",
       iconColor: "text-indigo-600",
       navIcon: <MdOutlineWarehouse size={20} />,
