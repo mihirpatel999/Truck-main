@@ -3098,7 +3098,7 @@ export default function Home() {
       description: "Manage plant locations"
     },
     {
-      name: "User Management",
+      name: "User Master",
       path: "/usermaster",
       icon: <RiUserSettingsLine size={24} />,
       roles: ["Owner", "Admin"],
@@ -3128,7 +3128,7 @@ export default function Home() {
       description: "Manage truck movements"
     },
     {
-      name: "Truck Locator",
+      name: "Truck Finder",
       path: "/truckfind",
       icon: <FiSearch size={24} />,
       roles: ["Owner", "Admin", "Dispatch"],
@@ -3138,7 +3138,7 @@ export default function Home() {
       description: "Track truck locations"
     },
     {
-      name: "Gate Control",
+      name: "Gate Keeper",
       path: "/gate",
       icon: <BsDoorOpen size={24} />,
       roles: ["Owner", "Admin", "GateKeeper"],
@@ -3148,7 +3148,7 @@ export default function Home() {
       description: "Control gate access"
     },
     {
-      name: "Loading Dock",
+      name: "Loading",
       path: "/loader",
       icon: <PiPackageLight size={24} />,
       roles: ["Owner", "Admin", "Loader"],
@@ -3158,7 +3158,7 @@ export default function Home() {
       description: "Manage loading operations"
     },
     {
-      name: "Operations Report",
+      name: "General Report",
       path: "/reports",
       icon: <MdOutlineAnalytics size={24} />,
       roles: ["Owner", "Admin", "Report"],
@@ -3168,7 +3168,7 @@ export default function Home() {
       description: "View operational reports"
     },
     {
-      name: "Schedule Board",
+      name: "Truck Schedule",
       path: "/truckshedule",
       icon: <BsCalendarCheck size={24} />,
       roles: ["Owner", "Admin", "Report"],
@@ -3177,26 +3177,8 @@ export default function Home() {
       navIcon: <BsCalendarCheck size={20} />,
       description: "View truck schedules"
     },
-    {
-      name: "Staff Management",
-      path: "/staff",
-      icon: <HiOutlineUserGroup size={24} />,
-      roles: ["Owner", "Admin"],
-      color: "bg-violet-100",
-      iconColor: "text-violet-600",
-      navIcon: <HiOutlineUserGroup size={20} />,
-      description: "Manage staff members"
-    },
-    {
-      name: "Time Tracking",
-      path: "/timeclock",
-      icon: <FiClock size={24} />,
-      roles: ["Owner", "Admin", "Dispatch"],
-      color: "bg-emerald-100",
-      iconColor: "text-emerald-600",
-      navIcon: <FiClock size={20} />,
-      description: "Track working hours"
-    }
+    
+  
   ];
 
   // Filter panels based on user role
