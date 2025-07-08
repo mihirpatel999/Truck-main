@@ -2260,14 +2260,450 @@
 //   );
 // }
 
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import { FiTruck, FiCalendar, FiFilter, FiSearch, FiCheckCircle, FiXCircle, FiRefreshCw } from 'react-icons/fi';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import CancelButton from './CancelButton';
+
+
+
+// const API_URL = import.meta.env.VITE_API_URL;
+
+// export default function TruckSchedule() {
+//   const [fromDate, setFromDate] = useState('');
+//   const [toDate, setToDate] = useState('');
+//   const [status, setStatus] = useState('All');
+//   const [truckSearch, setTruckSearch] = useState('');
+//   const [plantList, setPlantList] = useState([]);
+//   const [selectedPlants, setSelectedPlants] = useState([]);
+//   const [data, setData] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState('');
+//   const [showPlantFilter, setShowPlantFilter] = useState(false);
+
+//   useEffect(() => {
+//     const userId = localStorage.getItem('userId');
+//     const role = localStorage.getItem('role');
+//     const allowedPlantsRaw = localStorage.getItem('allowedPlants') || '';
+//     const allowedPlants = allowedPlantsRaw.split(',').map(p => p.trim()).filter(Boolean);
+
+//     axios.get(`${API_URL}/api/plants`, {
+//       headers: { userid: userId, role }
+//     })
+//     .then(res => {
+//       const filtered = res.data.filter(plant => {
+//         const pid = String(plant.plantid || '');
+//         return allowedPlants.includes(pid) || role?.toLowerCase() === 'admin';
+//       });
+//       setPlantList(filtered);
+//       setSelectedPlants(filtered.map(p => p.plantid.toString()));
+//       toast.success('Plants loaded successfully', {
+//         position: "top-right",
+//         autoClose: 2000,
+//         hideProgressBar: false,
+//       });
+//     })
+//     .catch(() => {
+//       setError('Failed to load plants');
+//       toast.error('Failed to load plants', {
+//         position: "top-right",
+//         autoClose: 3000,
+//       });
+//     });
+//   }, []);
+
+//   const togglePlant = (id) => {
+//     setSelectedPlants(prev =>
+//       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+//     );
+//     toast.info('Plant selection updated', {
+//       position: "top-right",
+//       autoClose: 1500,
+//     });
+//   };
+
+//   const selectAll = () => {
+//     setSelectedPlants(plantList.map(p => p.plantid.toString()));
+//     toast.success('All plants selected', {
+//       position: "top-right",
+//       autoClose: 1500,
+//     });
+//   };
+
+//   const deselectAll = () => {
+//     setSelectedPlants([]);
+//     toast.info('All plants deselected', {
+//       position: "top-right",
+//       autoClose: 1500,
+//     });
+//   };
+
+//   const fetchData = async (st, tr = '') => {
+//     if (!fromDate || !toDate || selectedPlants.length === 0) {
+//       setError('Please select all filters');
+//       toast.error('Please select all filters', {
+//         position: "top-right",
+//         autoClose: 3000,
+//       });
+//       return;
+//     }
+    
+//     setLoading(true);
+//     setError('');
+//     setStatus(st);
+//     toast.info('Fetching truck data...', {
+//       position: "top-right",
+//       autoClose: 1000,
+//     });
+
+//     try {
+//       const res = await axios.get(`${API_URL}/api/truck-schedule`, {
+//         params: {
+//           fromDate,
+//           toDate,
+//           status: st,
+//           plant: JSON.stringify(selectedPlants),
+//           truckNo: tr || undefined,
+//         },
+//       });
+//       let fetched = res.data;
+//       if (tr) {
+//         fetched = fetched.filter(item =>
+//           item.truckNo?.toLowerCase().includes(tr.toLowerCase())
+//         );
+//       }
+//       setData(fetched);
+//       toast.success(`Loaded ${fetched.length} trucks`, {
+//         position: "top-right",
+//         autoClose: 2000,
+//       });
+//     } catch {
+//       setError('Failed to fetch data');
+//       toast.error('Failed to fetch truck data', {
+//         position: "top-right",
+//         autoClose: 3000,
+//       });
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const formatDateTime = (dateTimeStr) => {
+//     if (!dateTimeStr) return '—';
+//     const date = new Date(dateTimeStr);
+//     return date.toLocaleString();
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 p-4 md:p-6">
+//       <ToastContainer
+//         position="top-right"
+//         autoClose={3000}
+//         hideProgressBar={false}
+//         newestOnTop={false}
+//         closeOnClick
+//         rtl={false}
+//         pauseOnFocusLoss
+//         draggable
+//         pauseOnHover
+//       />
+      
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header */}
+//         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+//           <div>
+//             <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-2">
+//               <FiTruck className="text-blue-600" />
+//               Truck Schedule Dashboard
+//             </h1>
+          
+//             <p className="text-gray-600">Track and manage your fleet vehicles</p>
+//           </div>
+//         </div>
+//               <CancelButton />
+
+//         {/* Filters Card */}
+//         <div className="bg-white rounded-xl shadow-md p-4 md:p-6 mb-6 border border-gray-100 backdrop-blur-sm bg-opacity-90">
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+//             <div className="space-y-1">
+//               <label className="block text-sm font-medium text-gray-700">From Date</label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FiCalendar className="text-gray-400" />
+//                 </div>
+//                 <input
+//                   type="date"
+//                   value={fromDate}
+//                   onChange={e => setFromDate(e.target.value)}
+//                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//                 />
+//               </div>
+//             </div>
+            
+//             <div className="space-y-1">
+//               <label className="block text-sm font-medium text-gray-700">To Date</label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FiCalendar className="text-gray-400" />
+//                 </div>
+//                 <input
+//                   type="date"
+//                   value={toDate}
+//                   onChange={e => setToDate(e.target.value)}
+//                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//                 />
+//               </div>
+//             </div>
+            
+//             <div className="space-y-1">
+//               <label className="block text-sm font-medium text-gray-700">Truck Number</label>
+//               <div className="relative">
+//                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                   <FiSearch className="text-gray-400" />
+//                 </div>
+//                 <input
+//                   type="text"
+//                   placeholder="Search truck..."
+//                   value={truckSearch}
+//                   onChange={e => setTruckSearch(e.target.value)}
+//                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//                 />
+//               </div>
+//             </div>
+            
+//             <div className="flex items-end">
+//               <button
+//                 onClick={() => fetchData(status, truckSearch)}
+//                 className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-2 px-4 rounded-lg shadow-md transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2"
+//               >
+//                 {loading ? (
+//                   <>
+//                     <FiRefreshCw className="animate-spin" />
+//                     Searching...
+//                   </>
+//                 ) : (
+//                   <>
+//                     <FiSearch />
+//                     Search Trucks
+//                   </>
+//                 )}
+//               </button>
+//             </div>
+//           </div>
+          
+//           {/* Status Filters */}
+//           <div className="flex flex-wrap gap-2 mb-4">
+//             {['Dispatched', 'InTransit', 'CheckedOut', 'All'].map(btn => (
+//               <button
+//                 key={btn}
+//                 onClick={() => fetchData(btn, truckSearch)}
+//                 className={`px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-1 transition-all duration-200 ${
+//                   status === btn
+//                     ? 'bg-blue-600 text-white shadow-md'
+//                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+//                 }`}
+//               >
+//                 {status === btn ? <FiCheckCircle className="text-white" /> : <FiCheckCircle className="text-gray-500" />}
+//                 {btn}
+//               </button>
+//             ))}
+//           </div>
+          
+//           {/* Plant Filter Toggle */}
+//           <div className="flex justify-between items-center mb-2">
+//             <h3 className="text-sm font-medium text-gray-700">Plant Filters</h3>
+//             <button
+//               onClick={() => setShowPlantFilter(!showPlantFilter)}
+//               className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
+//             >
+//               <FiFilter />
+//               {showPlantFilter ? 'Hide Plants' : 'Show Plants'}
+//             </button>
+//           </div>
+          
+//           {/* Plant Selection (Collapsible) */}
+//           {showPlantFilter && (
+//             <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+//               <div className="flex gap-2 mb-3">
+//                 <button
+//                   onClick={selectAll}
+//                   className="px-3 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition-colors"
+//                 >
+//                   Select All
+//                 </button>
+//                 <button
+//                   onClick={deselectAll}
+//                   className="px-3 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition-colors"
+//                 >
+//                   Deselect All
+//                 </button>
+//               </div>
+//               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-60 overflow-y-auto p-1">
+//                 {plantList.map(p => (
+//                   <label key={p.plantid} className="flex items-center gap-2 text-sm p-2 hover:bg-blue-50 rounded transition-colors">
+//                     <input
+//                       type="checkbox"
+//                       checked={selectedPlants.includes(p.plantid.toString())}
+//                       onChange={() => togglePlant(p.plantid.toString())}
+//                       className="rounded text-blue-600 focus:ring-blue-500"
+//                     />
+//                     <span className="truncate">{p.plantname}</span>
+//                   </label>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Results Section */}
+//         <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 backdrop-blur-sm bg-opacity-90">
+//           {/* Loading/Error States */}
+//           {loading && (
+//             <div className="p-8 flex flex-col items-center justify-center">
+//               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+//               <p className="text-gray-700 font-medium">Loading truck data...</p>
+//             </div>
+//           )}
+          
+//           {error && (
+//             <div className="p-6 text-center">
+//               <div className="inline-flex items-center justify-center bg-red-100 rounded-full p-3 mb-3">
+//                 <FiXCircle className="text-red-500 text-2xl" />
+//               </div>
+//               <h3 className="text-lg font-medium text-gray-900 mb-1">{error}</h3>
+//               <p className="text-gray-600">Please try again or check your filters</p>
+//               <button
+//                 onClick={() => fetchData(status, truckSearch)}
+//                 className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+//               >
+//                 Retry
+//               </button>
+//             </div>
+//           )}
+          
+//           {!loading && !error && data.length === 0 && (
+//             <div className="p-8 text-center">
+//               <div className="inline-flex items-center justify-center bg-blue-100 rounded-full p-4 mb-4">
+//                 <FiTruck className="text-blue-500 text-3xl" />
+//               </div>
+//               <h3 className="text-lg font-medium text-gray-900 mb-1">No trucks found</h3>
+//               <p className="text-gray-600">Adjust your search criteria and try again</p>
+//             </div>
+//           )}
+
+//           {/* Desktop Table */}
+//           {!loading && !error && data.length > 0 && (
+//             <div className="hidden md:block overflow-x-auto">
+//               <table className="min-w-full divide-y divide-gray-200">
+//                 <thead className="bg-gray-50">
+//                   <tr>
+//                     {['Truck No', 'Plant', 'Check-In', 'Check-Out', 'Slip', 'Qty', 'Freight', 'Priority'].map((header) => (
+//                       <th
+//                         key={header}
+//                         scope="col"
+//                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+//                       >
+//                         {header}
+//                       </th>
+//                     ))}
+//                   </tr>
+//                 </thead>
+//                 <tbody className="bg-white divide-y divide-gray-200">
+//                   {data.map((item, idx) => (
+//                     <tr key={idx} className="hover:bg-blue-50 transition-colors">
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 uppercase">
+//                         {item.truckNo || '—'}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {item.plantName || '—'}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {formatDateTime(item.checkInTime)}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {formatDateTime(item.checkOutTime)}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {item.loadingSlipNo || '—'}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {item.qty || '—'}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {item.freight || '—'}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+//                         {item.priority || '—'}
+//                       </td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               </table>
+//             </div>
+//           )}
+
+//           {/* Mobile Cards */}
+//           {!loading && !error && data.length > 0 && (
+//             <div className="block md:hidden space-y-4 p-4">
+//               {data.map((item, idx) => (
+//                 <div key={idx} className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+//                   <div className="p-4 space-y-2">
+//                     <div className="flex justify-between items-start">
+//                       <h3 className="text-lg font-bold text-blue-600 uppercase">{item.truckNo || '—'}</h3>
+//                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+//                         {item.priority || 'Standard'}
+//                       </span>
+//                     </div>
+                    
+//                     <div className="grid grid-cols-2 gap-2">
+//                       <div>
+//                         <p className="text-xs text-gray-500">Plant</p>
+//                         <p className="text-sm font-medium">{item.plantName || '—'}</p>
+//                       </div>
+//                       <div>
+//                         <p className="text-xs text-gray-500">Slip No</p>
+//                         <p className="text-sm font-medium">{item.loadingSlipNo || '—'}</p>
+//                       </div>
+//                       <div>
+//                         <p className="text-xs text-gray-500">Check-In</p>
+//                         <p className="text-sm">{formatDateTime(item.checkInTime)}</p>
+//                       </div>
+//                       <div>
+//                         <p className="text-xs text-gray-500">Check-Out</p>
+//                         <p className="text-sm">{formatDateTime(item.checkOutTime)}</p>
+//                       </div>
+//                       <div>
+//                         <p className="text-xs text-gray-500">Quantity</p>
+//                         <p className="text-sm font-medium">{item.qty || '—'}</p>
+//                       </div>
+//                       <div>
+//                         <p className="text-xs text-gray-500">Freight</p>
+//                         <p className="text-sm font-medium">{item.freight || '—'}</p>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }//////////////// /////////////////////////////// /////////////////// / / / /
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiTruck, FiCalendar, FiFilter, FiSearch, FiCheckCircle, FiXCircle, FiRefreshCw } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import CancelButton from './CancelButton';
-
-
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -2282,6 +2718,7 @@ export default function TruckSchedule() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPlantFilter, setShowPlantFilter] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -2299,18 +2736,11 @@ export default function TruckSchedule() {
       });
       setPlantList(filtered);
       setSelectedPlants(filtered.map(p => p.plantid.toString()));
-      toast.success('Plants loaded successfully', {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-      });
+      toast.success('Plants loaded successfully');
     })
     .catch(() => {
       setError('Failed to load plants');
-      toast.error('Failed to load plants', {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error('Failed to load plants');
     });
   }, []);
 
@@ -2318,45 +2748,30 @@ export default function TruckSchedule() {
     setSelectedPlants(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     );
-    toast.info('Plant selection updated', {
-      position: "top-right",
-      autoClose: 1500,
-    });
+    toast.info('Plant selection updated');
   };
 
   const selectAll = () => {
     setSelectedPlants(plantList.map(p => p.plantid.toString()));
-    toast.success('All plants selected', {
-      position: "top-right",
-      autoClose: 1500,
-    });
+    toast.success('All plants selected');
   };
 
   const deselectAll = () => {
     setSelectedPlants([]);
-    toast.info('All plants deselected', {
-      position: "top-right",
-      autoClose: 1500,
-    });
+    toast.info('All plants deselected');
   };
 
   const fetchData = async (st, tr = '') => {
     if (!fromDate || !toDate || selectedPlants.length === 0) {
       setError('Please select all filters');
-      toast.error('Please select all filters', {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error('Please select all filters');
       return;
     }
     
     setLoading(true);
     setError('');
     setStatus(st);
-    toast.info('Fetching truck data...', {
-      position: "top-right",
-      autoClose: 1000,
-    });
+    toast.info('Fetching truck data...');
 
     try {
       const res = await axios.get(`${API_URL}/api/truck-schedule`, {
@@ -2368,23 +2783,26 @@ export default function TruckSchedule() {
           truckNo: tr || undefined,
         },
       });
-      let fetched = res.data;
+      
+      // Process the data to ensure proper check-in/check-out times
+      const processedData = res.data.map(item => ({
+        ...item,
+        checkInTime: item.checkInTime || null,
+        checkOutTime: item.checkOutTime || null
+      }));
+
+      let fetched = processedData;
       if (tr) {
         fetched = fetched.filter(item =>
           item.truckNo?.toLowerCase().includes(tr.toLowerCase())
         );
       }
       setData(fetched);
-      toast.success(`Loaded ${fetched.length} trucks`, {
-        position: "top-right",
-        autoClose: 2000,
-      });
-    } catch {
+      toast.success(`Loaded ${fetched.length} trucks`);
+    } catch (err) {
+      console.error('Fetch error:', err);
       setError('Failed to fetch data');
-      toast.error('Failed to fetch truck data', {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error('Failed to fetch truck data');
     } finally {
       setLoading(false);
     }
@@ -2392,8 +2810,25 @@ export default function TruckSchedule() {
 
   const formatDateTime = (dateTimeStr) => {
     if (!dateTimeStr) return '—';
-    const date = new Date(dateTimeStr);
-    return date.toLocaleString();
+    try {
+      const date = new Date(dateTimeStr);
+      if (isNaN(date.getTime())) return '—';
+      
+      return date.toLocaleString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+    } catch {
+      return '—';
+    }
+  };
+
+  const handleClose = () => {
+    navigate('/home');
   };
 
   return (
@@ -2418,11 +2853,16 @@ export default function TruckSchedule() {
               <FiTruck className="text-blue-600" />
               Truck Schedule Dashboard
             </h1>
-          
             <p className="text-gray-600">Track and manage your fleet vehicles</p>
           </div>
+          <button 
+            onClick={handleClose}
+            className="mt-4 md:mt-0 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center gap-2 transition-colors"
+          >
+            <FiXCircle />
+            Close
+          </button>
         </div>
-              <CancelButton />
 
         {/* Filters Card */}
         <div className="bg-white rounded-xl shadow-md p-4 md:p-6 mb-6 border border-gray-100 backdrop-blur-sm bg-opacity-90">
