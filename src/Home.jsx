@@ -3188,7 +3188,7 @@ export default function Home() {
     return (
       userRoles.some((role) =>
        panel.roles.map((r) => r.toLowerCase()).includes(role)
-     ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind","/plantmaster"].includes(panel.path)
+     ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind","/plantmaster",,"/userregister","/usermaster"].includes(panel.path)
     );
   });
 
@@ -3199,7 +3199,7 @@ export default function Home() {
     return (
       userRoles.some((role) =>
         panel.roles.map((r) => r.toLowerCase()).includes(role)
-      ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind","/plantmaster"].includes(panel.path)
+      ) && ["/dashboard", "/truck", "/reports", "/gate", "/loader", "/truckfind","/plantmaster","/userregister","/usermaster"].includes(panel.path)
     );
   });
 
